@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="doc_title">Supporting Your Child's Next Steps: Post-16 Options After Year 11</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+            margin: 0;
+            padding: 2rem;
+        }
+
+
+        /* Fillable Textarea */
+        .fillable-textarea {
+            width: 100%;
+            min-height: 3rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        /* Print Button */
+        #printButton {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 50; /* Ensure it's above content but can be overlapped by modals if any */
+        }
+
+        /* Language Selector */
+        .language-selector {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            z-index: 10;
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            .language-selector {
+                position: static;
+                margin-bottom: 1rem;
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        /* Consolidated Print Styles */
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                background-color: #fff !important;
+                color: #000 !important;
+                padding: 0;
+                margin: 0;
+            }
+
+            #printButton, .language-selector {
+                display: none !important;
+            }
+
+            .option-card,
+            .reflection-section,
+            #other_pathways_card {
+                page-break-inside: avoid;
+                break-inside: avoid;
+                border: 1px solid #ccc !important;
+                box-shadow: none !important;
+                background-color: transparent !important;
+            }
+
+            input,
+            textarea {
+                border: 1px solid #000 !important;
+            }
+
+            .fillable-textarea {
+                background: transparent !important;
+                margin-bottom: 1rem;
+            }
+            .grid {
+                grid-template-columns: 1fr; /* Stack cards vertically */
+            }
+            h1 { font-size: 2.25rem; }
+            .text-xl { font-size: 1.1rem; }
+            .language-selector {
+                position: static; /* Un-stick the language selector */
+                margin-bottom: 1rem;
+                width: 100%;
+                text-align: center;
+            }
+            .language-selector select { width: 90%; }
+            .reflection-options {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button id="printButton" onclick="window.print()" class="fixed top-4 left-4 bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Print Guide</button>
+    <div class="flex flex-col items-center justify-center min-h-screen">
+
+    <div class="language-selector">
+        <select id="languageSelect" onchange="changeLanguage()" class="p-2 rounded border-gray-300">
+            <option value="ar">العربية (Arabic)</option>
+            <option value="bn">বাংলা (Bengali)</option>
+            <option value="en" selected>English</option>
+            <option value="ml">മലയാളം (Malayalam)</option>
+            <option value="zh">普通话 (Mandarin)</option>
+            <option value="uk">Українська (Ukrainian)</option>
+            <option value="ur">اردو (Urdu)</option>
+            <option value="cy">Cymraeg (Welsh)</option>
+        </select>
+    </div>
+
+    <!-- Side 1 of the Infographic -->
+    <div class="infographic-side">
+        <!-- Title and Intro Panel -->
+        <div class="text-center mb-8">
+            <h1 class="text-5xl md:text-6xl font-extrabold text-blue-800 mb-4 leading-tight tracking-tight">
+                <span class="text-indigo-600" id="main_title_part1">Your Future Unlocked:</span><br>
+                <span id="main_title_part2">Navigating Post-16 Pathways</span>
+            </h1>
+            <p class="text-xl text-gray-700 max-w-2xl mx-auto" id="intro_text">
+                Helping your child decide their path after Year 11 can be a big step. This guide explains the main options and how you can support their choices.
+            </p>
+        </div>
+
+        <!-- Visual Summary of Post-16 Pathways Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
+
+            <!-- A-levels Card -->
+            <div class="option-card bg-sky-100 p-6 rounded-2xl shadow-lg border-b-4 border-sky-400 cursor-pointer">
+                <span class="text-6xl mb-4" role="img" aria-label="Compass Icon">🧭</span>
+                <div class="bg-white p-4 rounded-lg">
+                    <h2 class="text-2xl font-bold text-sky-800 mb-2" id="al_title">A-levels</h2>
+                    <p class="text-gray-700 text-lg" id="al_description">Academic subjects, ideal for university routes.</p>
+                </div>
+                <div class="card-details">
+                    <h4 class="font-bold text-lg mb-3" id="al_key_info_header">Key Info & Reality Check:</h4>
+                    <div class="info-item-box bg-blue-50 border-blue-200">
+                        <p><strong id="al_what_label">What it is:</strong> <span id="al_what_text">A 2-year course studying 3-4 subjects you choose in depth. Focus is on academic theory and knowledge.</span></p>
+                    </div>
+                    <div class="info-item-box bg-yellow-50 border-yellow-200">
+                        <p><strong id="al_entry_label">Entry:</strong> <span id="al_entry_text">Typically 5 or more GCSEs at grades 9-4 (A*-C), often with higher grade requirements (e.g., 6/B) in the chosen subjects.</span></p>
+                    </div>
+                    <div class="info-item-box bg-green-50 border-green-200">
+                        <p><strong id="al_assessment_label">Assessment:</strong> <span id="al_assessment_text">Mainly by <strong>final exams</strong> at the end of the 2 years, with some subjects having a coursework component.</span></p>
+                    </div>
+                    <div class="info-item-box bg-indigo-50 border-indigo-200">
+                        <p><strong id="al_progression_label">Progression:</strong> <span id="al_progression_text">The primary route to <strong>university</strong>. Also respected for Higher/Degree Apprenticeships and direct employment.</span></p>
+                    </div>
+                    <div class="info-item-box bg-red-50 border-red-200">
+                        <p><strong id="al_stereotype_label">The Stereotype:</strong> <span id="al_stereotype_text">"They're the only 'proper' qualification" / "They're only for getting into university."</span></p>
+                    </div>
+                    <div class="info-item-box bg-teal-50 border-teal-200">
+                        <p><strong id="al_reality_label">The Reality:</strong> <span id="al_reality_text">They build deep subject knowledge and strong analytical skills. While they are a key university route, many other pathways also lead to higher education and successful careers.</span></p>
+                    </div>
+                </div>
+                <p id="al_reflection_prompt" class="text-sm text-gray-500 italic mt-2"></p>
+            </div>
+
+            <!-- BTECs Card -->
+            <div class="option-card bg-emerald-100 p-6 rounded-2xl shadow-lg border-b-4 border-emerald-400 cursor-pointer">
+                <span class="text-6xl mb-4" role="img" aria-label="Gear Icon">⚙️</span>
+                <div class="bg-white p-4 rounded-lg">
+                    <h2 class="text-2xl font-bold text-emerald-800 mb-2" id="btec_title">BTECs</h2>
+                    <p class="text-gray-700 text-lg" id="btec_description">Practical and coursework-based, focusing on vocational skills.</p>
+                </div>
+                <div class="card-details">
+                    <h4 class="font-bold text-lg mb-3" id="btec_key_info_header">Key Info & Reality Check:</h4>
+                    <div class="info-item-box bg-blue-50 border-blue-200">
+                        <p><strong id="btec_what_label">What it is:</strong> <span id="btec_what_text">Applied, practical learning in a specific sector like Health, Business, or IT, often with real-world case studies.</span></p>
+                    </div>
+                    <div class="info-item-box bg-yellow-50 border-yellow-200">
+                        <p><strong id="btec_entry_label">Entry:</strong> <span id="btec_entry_text">Varies by course and level, but typically 4-5 GCSEs at grades 9-4 (A*-C).</span></p>
+                    </div>
+                    <div class="info-item-box bg-green-50 border-green-200">
+                        <p><strong id="btec_assessment_label">Assessment:</strong> <span id="btec_assessment_text">Primarily through <strong>coursework</strong>, projects, and practical assignments. Fewer final exams than A-Levels.</span></p>
+                    </div>
+                    <div class="info-item-box bg-indigo-50 border-indigo-200">
+                        <p><strong id="btec_progression_label">Progression:</strong> <span id="btec_progression_text">Excellent route to university (accepted by 95%), apprenticeships, or directly into employment.</span></p>
+                    </div>
+                    <div class="info-item-box bg-red-50 border-red-200">
+                        <p><strong id="btec_stereotype_label">The Stereotype:</strong> <span id="btec_stereotype_text">"They're an easier option" / "Not as respected as A-Levels."</span></p>
+                    </div>
+                    <div class="info-item-box bg-teal-50 border-teal-200">
+                        <p><strong id="btec_reality_label">The Reality:</strong> <span id="btec_reality_text">They are rigorous qualifications that develop practical, real-world skills highly valued by both employers and universities.</span></p>
+                    </div>
+                </div>
+                <p id="btec_reflection_prompt" class="text-sm text-gray-500 italic mt-2"></p>
+            </div>
+
+            <!-- T-Levels Card -->
+            <div class="option-card bg-amber-100 p-6 rounded-2xl shadow-lg border-b-4 border-amber-400 cursor-pointer">
+                <span class="text-6xl mb-4" role="img" aria-label="Briefcase Icon">💼</span>
+                <div class="bg-white p-4 rounded-lg">
+                    <h2 class="text-2xl font-bold text-amber-800 mb-2" id="tl_title">T-Levels</h2>
+                    <p class="text-gray-700 text-lg" id="tl_description">A mix of classroom learning and a long industry placement.</p>
+                </div>
+                <div class="card-details">
+                    <h4 class="font-bold text-lg mb-3" id="tl_key_info_header">Key Info & Reality Check:</h4>
+                    <div class="info-item-box bg-blue-50 border-blue-200">
+                        <p><strong id="tl_what_label">What it is:</strong> <span id="tl_what_text">A blend of 80% classroom learning and 20% on-the-job experience, including a 45-day (minimum) industry placement.</span></p>
+                    </div>
+                    <div class="info-item-box bg-yellow-50 border-yellow-200">
+                        <p><strong id="tl_entry_label">Entry:</strong> <span id="tl_entry_text">Varies, but generally requires 5 GCSEs including English and Maths at grade 4 or above.</span></p>
+                    </div>
+                    <div class="info-item-box bg-green-50 border-green-200">
+                        <p><strong id="tl_assessment_label">Assessment:</strong> <span id="tl_assessment_text">A mix of exams, practical projects, and a review from the placement employer.</span></p>
+                    </div>
+                    <div class="info-item-box bg-indigo-50 border-indigo-200">
+                        <p><strong id="tl_progression_label">Progression:</strong> <span id="tl_progression_text">Leads to skilled employment, Higher Apprenticeships, or university (UCAS points are awarded).</span></p>
+                    </div>
+                    <div class="info-item-box bg-red-50 border-red-200">
+                        <p><strong id="tl_stereotype_label">The Stereotype:</strong> <span id="tl_stereotype_text">"They're just for trades" / "They're too new and unproven."</span></p>
+                    </div>
+                    <div class="info-item-box bg-teal-50 border-teal-200">
+                        <p><strong id="tl_reality_label">The Reality:</strong> <span id="tl_reality_text">Equivalent to 3 A-Levels, they provide valuable, real-world experience and are co-designed with leading employers.</span></p>
+                    </div>
+                </div>
+                <p id="tl_reflection_prompt" class="text-sm text-gray-500 italic mt-2"></p>
+            </div>
+
+            <!-- IB Diploma Card -->
+            <div class="option-card bg-rose-100 p-6 rounded-2xl shadow-lg border-b-4 border-rose-400 cursor-pointer">
+                <span class="text-6xl mb-4" role="img" aria-label="Globe Icon">🌍</span>
+                <div class="bg-white p-4 rounded-lg">
+                    <h2 class="text-2xl font-bold text-rose-800 mb-2" id="ib_title">IB Diploma</h2>
+                    <p class="text-gray-700 text-lg" id="ib_description">A broad, international curriculum with six subjects.</p>
+                </div>
+                <div class="card-details">
+                    <h4 class="font-bold text-lg mb-3" id="ib_key_info_header">Key Info & Reality Check:</h4>
+                    <div class="info-item-box bg-blue-50 border-blue-200">
+                        <p><strong id="ib_what_label">What it is:</strong> <span id="ib_what_text">A comprehensive 2-year programme studying 6 subjects (from languages to sciences), plus a core programme focusing on critical thinking and research.</span></p>
+                    </div>
+                    <div class="info-item-box bg-yellow-50 border-yellow-200">
+                        <p><strong id="ib_entry_label">Entry:</strong> <span id="ib_entry_text">Demanding entry requirements, typically needing at least 5 GCSEs at grade 7-9 (A-A*).</span></p>
+                    </div>
+                    <div class="info-item-box bg-green-50 border-green-200">
+                        <p><strong id="ib_assessment_label">Assessment:</strong> <span id="ib_assessment_text">A combination of final exams and extensive coursework, including a major independent research project (the Extended Essay).</span></p>
+                    </div>
+                    <div class="info-item-box bg-indigo-50 border-indigo-200">
+                        <p><strong id="ib_progression_label">Progression:</strong> <span id="ib_progression_text">An excellent qualification for applying to top UK and international universities.</span></p>
+                    </div>
+                    <div class="info-item-box bg-red-50 border-red-200">
+                        <p><strong id="ib_stereotype_label">The Stereotype:</strong> <span id="ib_stereotype_text">"It's only for geniuses" / "The workload is impossible."</span></p>
+                    </div>
+                    <div class="info-item-box bg-teal-50 border-teal-200">
+                        <p><strong id="ib_reality_label">The Reality:</strong> <span id="ib_reality_text">It is academically challenging but develops exceptional time management, research skills, and a global perspective.</span></p>
+                    </div>
+                </div>
+                <p id="ib_reflection_prompt" class="text-sm text-gray-500 italic mt-2"></p>
+            </div>
+
+            <!-- Apprenticeships Card -->
+            <div class="option-card bg-violet-100 p-6 rounded-2xl shadow-lg border-b-4 border-violet-400 cursor-pointer">
+                <span class="text-6xl mb-4" role="img" aria-label="Wrench Icon">🔧</span>
+                <div class="bg-white p-4 rounded-lg">
+                    <h2 class="text-2xl font-bold text-violet-800 mb-2" id="app_title">Apprenticeships</h2>
+                    <p class="text-gray-700 text-lg" id="app_description">Earn while you learn in a real job with training.</p>
+                </div>
+                <div class="card-details">
+                    <h4 class="font-bold text-lg mb-3" id="app_key_info_header">Key Info & Reality Check:</h4>
+                    <div class="info-item-box bg-blue-50 border-blue-200">
+                        <p><strong id="app_what_label">What it is:</strong> <span id="app_what_text">A full-time job with structured training. At least 20% of the time is spent in 'off-the-job' training with a college or training provider.</span></p>
+                    </div>
+                    <div class="info-item-box bg-yellow-50 border-yellow-200">
+                        <p><strong id="app_entry_label">Entry:</strong> <span id="app_entry_text">Varies hugely by level (Intermediate, Advanced, Higher, Degree). Some have no formal requirements, others require A-Levels or equivalent.</span></p>
+                    </div>
+                    <div class="info-item-box bg-green-50 border-green-200">
+                        <p><strong id="app_assessment_label">Assessment:</strong> <span id="app_assessment_text">Continuous assessment of on-the-job skills and knowledge-based tests, culminating in an End-Point Assessment (EPA).</span></p>
+                    </div>
+                    <div class="info-item-box bg-indigo-50 border-indigo-200">
+                        <p><strong id="app_progression_label">Progression:</strong> <span id="app_progression_text">A full-time role, promotion, or progression to a higher-level apprenticeship (up to degree and master's level).</span></p>
+                    </div>
+                    <div class="info-item-box bg-red-50 border-red-200">
+                        <p><strong id="app_stereotype_label">The Stereotype:</strong> <span id="app_stereotype_text">"They're low-paid and just for manual trades."</span></p>
+                    </div>
+                    <div class="info-item-box bg-teal-50 border-teal-200">
+                        <p><strong id="app_reality_label">The Reality:</strong> <span id="app_reality_text">Available in over 1,500 job roles, from law to digital marketing. Salaries increase with experience and level.</span></p>
+                    </div>
+                </div>
+                <p id="app_reflection_prompt" class="text-sm text-gray-500 italic mt-2"></p>
+            </div>
+
+            <!-- Work with Training Card -->
+            <div class="option-card bg-slate-100 p-6 rounded-2xl shadow-lg border-b-4 border-slate-400 cursor-pointer">
+                <span class="text-6xl mb-4" role="img" aria-label="Lightbulb Icon">💡</span>
+                <div class="bg-white p-4 rounded-lg">
+                    <h2 class="text-2xl font-bold text-slate-800 mb-2" id="work_title">Work with Training</h2>
+                    <p class="text-gray-700 text-lg" id="work_description">Entering the workforce with recognised training.</p>
+                </div>
+                <div class="card-details">
+                    <h4 class="font-bold text-lg mb-3" id="work_key_info_header">Key Info & Reality Check:</h4>
+                    <div class="info-item-box bg-blue-50 border-blue-200">
+                        <p><strong id="work_what_label">What it is:</strong> <span id="work_what_text">Starting a job straight from school that includes structured, employer-funded training, leading to recognised qualifications (e.g., NVQs).</span></p>
+                    </div>
+                    <div class="info-item-box bg-yellow-50 border-yellow-200">
+                        <p><strong id="work_entry_label">Entry:</strong> <span id="work_entry_text">Often depends more on attitude and potential than specific academic grades. A strong CV and interview are key.</span></p>
+                    </div>
+                    <div class="info-item-box bg-green-50 border-green-200">
+                        <p><strong id="work_assessment_label">Assessment:</strong> <span id="work_assessment_text">A combination of on-the-job performance reviews and completing the requirements of the training course.</span></p>
+                    </div>
+                    <div class="info-item-box bg-indigo-50 border-indigo-200">
+                        <p><strong id="work_progression_label">Progression:</strong> <span id="work_progression_text">Can lead to rapid career advancement, further professional qualifications, and sometimes higher-level apprenticeships.</span></p>
+                    </div>
+                    <div class="info-item-box bg-red-50 border-red-200">
+                        <p><strong id="work_stereotype_label">The Stereotype:</strong> <span id="work_stereotype_text">"It's a dead-end job with no real qualifications."</span></p>
+                    </div>
+                    <div class="info-item-box bg-teal-50 border-teal-200">
+                        <p><strong id="work_reality_label">The Reality:</strong> <span id="work_reality_text">A fantastic way to gain real-world experience and industry-recognised qualifications without student debt, providing a head start in a career.</span></p>
+                    </div>
+                </div>
+                 <p id="work_reflection_prompt" class="text-sm text-gray-500 italic mt-2"></p>
+            </div>
+        </div>
+        <!-- Other Pathways Section -->
+        <div id="other_pathways_card" class="w-full max-w-5xl mt-8 p-8 rounded-2xl bg-blue-50 border border-blue-200">
+            <div class="text-center">
+                <span class="icon text-5xl mb-4" role="img" aria-label="Magnifying Glass Icon">🔍</span>
+                <h3 class="text-3xl font-extrabold text-blue-800 mb-3" id="other_pathways_title">Other Pathways & Support</h3>
+                <p class="text-lg text-gray-700" id="other_pathways_text">Some students choose pathways not shown on the main grid that can be just as valuable. Some students join the <strong>Armed Forces</strong>, where training, qualifications, and career development are combined with service. Entry-level work or sector-specific training programmes can also help young people build skills and progress to an apprenticeship or further education. For those who need additional support, pathways like <strong>supported internships</strong> and <strong>supported apprenticeships</strong> offer structured help for young people with Education, Health and Care Plans (EHCPs) or additional needs. These involve on-the-job training with a strong focus on building independence and employability. Talk to your school, college, or local careers service to find out what's available and what would best support your child's goals.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="infographic-side">
+
+        <!-- Self-Reflection and Action Planning Section -->
+        <div class="w-full max-w-5xl reflection-section bg-gray-800 text-white p-8 rounded-2xl">
+            <div class="text-center mb-10">
+                <h3 class="text-4xl font-extrabold text-white mb-3" id="reflect_header"></h3>
+            </div>
+
+            <!-- Learning Style -->
+            <div class="reflection-question">
+                <h4 class="text-xl font-bold text-white mb-2" id="learning_style_question"></h4>
+                <p class="text-gray-300 mb-4" id="learning_style_prompt"></p>
+                <div class="reflection-options">
+                    <div class="reflection-option"><input type="checkbox" id="chk_doing"><label for="chk_doing" id="label_learning_doing_parent"></label></div>
+                    <div class="reflection-option"><input type="checkbox" id="chk_writing"><label for="chk_writing" id="label_learning_writing_parent"></label></div>
+                    <div class="reflection-option"><input type="checkbox" id="chk_talking"><label for="chk_talking" id="label_learning_talking_parent"></label></div>
+                    <div class="reflection-option"><input type="checkbox" id="chk_watching"><label for="chk_watching" id="label_learning_watching_parent"></label></div>
+                    <div class="reflection-option"><input type="checkbox" id="chk_building"><label for="chk_building" id="label_learning_building_parent"></label></div>
+                </div>
+                <textarea class="fillable-textarea" placeholder="Write here..."></textarea>
+            </div>
+
+            <!-- Aspirations -->
+            <div class="reflection-question">
+                <h4 class="text-xl font-bold text-white mb-2" id="aspirations_question"></h4>
+                <p class="text-gray-300 mb-4" id="aspirations_prompt"></p>
+                <div class="reflection-options">
+                    <div class="reflection-option"><input type="checkbox" id="chk_uni"><label for="chk_uni" id="label_goal_university_parent"></label></div>
+                    <div class="reflection-option"><input type="checkbox" id="chk_earn"><label for="chk_earn" id="label_goal_earn_money_parent"></label></div>
+                    <div class="reflection-option"><input type="checkbox" id="chk_exp"><label for="chk_exp" id="label_goal_real_experience_parent"></label></div>
+                    <div class="reflection-option"><input type="checkbox" id="chk_explore"><label for="chk_explore" id="label_goal_try_different_parent"></label></div>
+                </div>
+                <textarea class="fillable-textarea" placeholder="Write here..."></textarea>
+            </div>
+
+            <div class="text-center my-10">
+                <h3 class="text-4xl font-extrabold text-white mb-3" id="compare_decide_header"></h3>
+            </div>
+
+            <!-- Good Fit -->
+            <div class="reflection-question">
+                <h4 class="text-xl font-bold text-white mb-2" id="good_fit_question"></h4>
+                <p class="text-gray-300 mb-4" id="good_fit_prompt"></p>
+                <textarea class="fillable-textarea" placeholder="Write here..."></textarea>
+            </div>
+
+            <!-- Learn More -->
+            <div class="reflection-question">
+                <h4 class="text-xl font-bold text-white mb-2" id="learn_more_question"></h4>
+                <p class="text-gray-300 mb-4" id="talk_through_learn_more_prompt"></p>
+                <textarea class="fillable-textarea" placeholder="Write here..."></textarea>
+            </div>
+
+            <div class="text-center my-10">
+                <h3 class="text-4xl font-extrabold text-white mb-3" id="next_steps_header"></h3>
+            </div>
+
+            <!-- Next Step -->
+            <div class="reflection-question">
+                <h4 class="text-xl font-bold text-white mb-2" id="parent_next_step_prompt"></h4>
+                <p class="text-gray-300 mb-4" id="next_step_prompt_text"></p>
+                <textarea class="fillable-textarea" placeholder="Write here..."></textarea>
+            </div>
+
+            <!-- Parent Questions -->
+            <div class="reflection-question">
+                <h4 class="text-xl font-bold text-white mb-2" id="parent_questions_prompt"></h4>
+                <p class="text-gray-300 mb-4" id="parent_questions_prompt_text"></p>
+                <textarea class="fillable-textarea" placeholder="Write here..."></textarea>
+            </div>
+
+            <!-- Who to Talk To -->
+            <div class="reflection-question">
+                <h4 class="text-xl font-bold text-white mb-2" id="parent_who_to_talk_prompt"></h4>
+                <p class="text-gray-300 mb-4" id="who_to_talk_prompt_text"></p>
+                <textarea class="fillable-textarea" placeholder="Write here..."></textarea>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center text-xs text-gray-500 mt-8">
+      © 2025 Futures Unlocked | Developed by S.N.Hekim
+    </footer>
+
+    <script src="translations.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const languageSelect = document.getElementById('languageSelect');
+
+            function changeLanguage() {
+                const lang = languageSelect.value;
+                localStorage.setItem('language', lang); // Save preference
+                const translation = translations[lang] || translations.en;
+
+                // Update all text content based on the selected language
+                Object.keys(translation).forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        // Use innerHTML for keys that are expected to contain HTML tags for formatting
+                        if (id.includes('_prompt') || id.includes('_text') || id.includes('_header') || id.includes('_reality') || id.includes('_description') || id.includes('_assessment_text') || id.includes('_progression_text')) {
+                            element.innerHTML = translation[id];
+                        } else {
+                            element.textContent = translation[id];
+                        }
+                    }
+                });
+
+                // Manually set document title
+                document.title = translation.doc_title || "Post-16 Options Guide";
+            }
+
+            // Restore saved language
+            const savedLang = localStorage.getItem('language') || 'en';
+            languageSelect.value = savedLang;
+            changeLanguage(); // Set initial language on page load
+
+            // Add event listener for language changes
+            languageSelect.addEventListener('change', changeLanguage);
+        });
+    </script>
+</body>
+</html>
