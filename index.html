@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="doc_title">Supporting Your Child's Next Steps: Post-16 Options After Year 11</title>
+    <title>Your Future Unlocked: A Student’s Guide to Post-16 Pathways</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -23,7 +23,8 @@
 
         /* Styling for each A4 landscape 'side' - simulating a two-sided print */
         .infographic-side {
-            width: 297mm; /* A4 Landscape width */
+            width: 100%; /* Make it fluid up to a max-width */
+            max-width: 297mm; /* Approximate A4 Landscape width for large screens */
             min-height: 210mm; /* Use min-height instead of fixed height to allow content to push it */
             padding: 1.5rem;
             box-sizing: border-box;
@@ -33,15 +34,15 @@
             margin-bottom: 2rem; /* Space between 'sides' for screen view */
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: flex-start; /* IMPORTANT: Align content to the top within each side */
+            align-items: center; /* Keep centered for overall page layout */
+            justify-content: flex-start; /* Align content to the top within each side */
             page-break-after: always; /* Force a page break after each side when printing */
+            page-break-inside: avoid;  /* Prevent splitting a side mid-page */
         }
 
         /* Adjustments for the last side to prevent an extra blank page break */
         .infographic-side:last-child {
-            page-break-after: avoid;
-            margin-bottom: 0;
+            page-break-after: auto; /* Better than 'avoid', ensures no empty page at end */
         }
 
         /* General styles for option cards */
@@ -51,84 +52,99 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start; /* Align content to top of card */
-            align-items: center;
-            text-align: center;
+            align-items: center; /* Keep centered for overall card layout */
+            text-align: left; /* Default text alignment for content within card */
         }
         .option-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
+        /* Style for highlighted cards */
+        .option-card.highlighted {
+            border-color: #3b82f6; /* Blue border */
+            box-shadow: 0 0 0 3px #bfdbfe, 0 10px 20px rgba(0, 0, 0, 0.15); /* Blue glow */
+        }
 
         /* Styles for detailed info within cards */
         .card-details {
-            font-size: 0.8rem; /* Retain slightly smaller font for density */
+            font-size: 0.95rem; /* Slightly larger font for better readability */
             margin-top: 1rem;
-            line-height: 1.45; /* Increased line height for readability */
-            color: #475569; /* Muted gray for detail text */
-            text-align: left; /* Align details left for readability */
-            width: 100%; /* Ensure details take full width */
-            background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white */
-            backdrop-filter: blur(8px); /* Frosted glass effect */
-            -webkit-backdrop-filter: blur(8px); /* Safari support */
-            padding: 1rem;
+            line-height: 1.6; /* Adjusted line height for comfort */
+            color: #334155; /* Slightly darker text for better contrast */
+            text-align: left;
+            width: 100%;
+            background-color: #fefefe; /* Slightly whiter background for clarity */
+            padding: 0.75rem; /* Adjusted padding */
             border-radius: 0.75rem;
-            border: 1px solid rgba(0,0,0,0.05);
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            border: 1px solid #e2e8f0; /* Softer border */
+            overflow: hidden; /* Hide overflow when collapsed */
+            max-height: 0; /* Start collapsed */
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out, margin-top 0.3s ease-out;
+            opacity: 0;
+            overflow-y: hidden; /* Ensure no scrollbar when collapsed */
         }
-
-        .info-item-box {
-            border-radius: 0.5rem;
+        .card-details.expanded {
+            max-height: 1500px; /* Increased height to ensure all content is visible */
             padding: 0.75rem;
-            margin-bottom: 0.75rem;
-            border-width: 1px;
+            margin-top: 1rem;
+            opacity: 1;
+            overflow-y: auto; /* Add scrollbar if content exceeds max-height */
         }
-
-        .info-item-box:last-child {
-            margin-bottom: 0;
-        }
-
         .card-details ul {
             list-style: none; /* Remove default bullet */
             padding-left: 0; /* Remove default padding */
             margin-top: 0.5rem;
         }
         .card-details li {
-            margin-bottom: 0.6rem; /* More space between list items */
+            margin-bottom: 0.75rem; /* More space between list items */
+            padding: 0.75rem; /* Padding inside each list item to make it a distinct block */
+            background-color: #f8fafc; /* Very light background for each item */
+            border-radius: 0.5rem; /* Rounded corners for each item */
+            border: 1px solid #e2e8f0; /* Light border for each item */
             display: flex;
-            align-items: flex-start;
-            gap: 0.5rem;
+            align-items: flex-start; /* Align icon and text at the top */
+            gap: 1rem; /* Increased gap between icon and text */
             color: #334155;
         }
+        .card-details li:last-child {
+            margin-bottom: 0;
+        }
         .card-details li strong {
-            color: #1e293b; /* Darker bold text */
+            color: #1a202c; /* Even darker bold text */
+            font-weight: 700; /* Ensure strong is very bold */
         }
         .card-details li .icon {
-            font-size: 1.1em;
+            font-size: 1.5em; /* Significantly larger icons */
             flex-shrink: 0;
-            line-height: 1.45; /* Align icon with text line height */
+            line-height: 1.6; /* Align icon with new line height */
+        }
+        .card-details li .text-content {
+            flex-grow: 1; /* Allow text content to take up available space */
+            flex-shrink: 1; /* Allow text content to shrink */
         }
 
         /* Specific styling for stereotype/reality */
-        .card-details li.stereotype {
-            color: #dc2626; /* Red for stereotype */
+        .card-details li.perception {
+            color: #ef4444; /* Soft red for perception */
             font-weight: 500;
+            background-color: #fee2e2; /* Lighter red background */
+            border-color: #fca5a5;
         }
         .card-details li.reality {
-            color: #16a34a; /* Green for reality */
+            color: #22c55e; /* Green for reality */
             font-weight: 500;
+            background-color: #d1fae5; /* Lighter green background */
+            border-color: #a7f3d0;
         }
-        .card-details li.stereotype .icon { color: #ef4444; }
-        .card-details li.reality .icon { color: #22c55e; }
+        .card-details li.perception .icon { color: #dc2626; } /* Darker red icon */
+        .card-details li.reality .icon { color: #16a34a; } /* Darker green icon */
 
 
         /* Styles for interactive checkboxes */
         .checkbox-container {
             display: flex;
             justify-content: center;
-            gap: 1rem;
+            gap: 1.5rem; /* Increased gap */
             margin-top: 0.75rem;
             width: 100%; /* Ensure it spans the width for alignment */
         }
@@ -139,6 +155,7 @@
             cursor: pointer;
             font-size: 0.9rem;
             color: #475569;
+            padding: 0.25rem 0.5rem; /* Added padding for easier click/tap */
         }
         .checkbox-container input[type="checkbox"] {
             -webkit-appearance: none;
@@ -174,6 +191,7 @@
             border-radius: 1.5rem;
             box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
             border-top: 4px solid #cbd5e1;
+            page-break-before: always; /* Ensure this section starts on a new 'page' for print */
         }
         .reflection-question {
             margin-bottom: 1.5rem;
@@ -207,52 +225,86 @@
             color: #166534;
         }
 
-        /* Space for writing/comments */
-        .fillable-line {
+        /* Styles for textareas */
+        .fillable-textarea {
             width: 100%;
-            border-bottom: 2px dashed #94a3b8; /* Dashed line for writing */
+            min-height: 3rem; /* Adjusted height for more writing space */
+            padding: 0.75rem;
             margin-top: 0.5rem;
             margin-bottom: 0.75rem;
-            height: 1.5rem; /* Provide some height for writing */
+            border: 1px solid #cbd5e1; /* Soft border */
+            border-radius: 0.5rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: #334155;
+            resize: vertical; /* Allow vertical resizing */
+            background-color: #ffffff;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .fillable-textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
         }
 
-        /* Language Selector specific styles */
-        .language-selector {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            z-index: 10;
+        /* Styling for the new QR code section */
+        .qr-container {
+            width: 100%;
+            max-width: 5xl;
+            margin-top: 2rem;
+            padding: 2.5rem;
+            background-color: #e0f2fe; /* Light blue background */
+            border-radius: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #90cdf4; /* Light blue border */
         }
-        .language-selector select {
-            padding: 0.5rem 1rem;
+
+        .qr-section {
+            display: flex;
+            flex-direction: column; /* Stack header and blocks vertically */
+            align-items: center; /* Center content */
+            gap: 1.5rem;
+        }
+
+        .qr-blocks-wrapper {
+            display: flex;
+            flex-direction: row; /* QR blocks side-by-side */
+            flex-wrap: wrap; /* Allow wrapping */
+            justify-content: center;
+            gap: 2rem;
+            width: 100%;
+        }
+
+        .qr-block {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            flex: 1; /* Allow blocks to grow */
+            min-width: 250px;
+            max-width: 320px;
+        }
+        .qr-block img {
             border-radius: 0.5rem;
             border: 1px solid #cbd5e1;
-            background-color: #f8fafc;
-            color: #334155;
-            font-size: 0.9rem;
-            cursor: pointer;
+        }
+        .qr-block h4 {
+            font-size: 1.25rem; /* Larger heading for QR blocks */
+            font-weight: 700;
+            color: #1e3a8a; /* Darker blue for headings */
+            margin-bottom: 0;
+        }
+        .qr-block p {
+            font-size: 0.95rem;
+            color: #475569;
         }
 
-        /* Specific styles for the "Other Pathways" box for better readability */
-        #other_pathways_card {
-            background-color: #e0f2fe; /* A slightly richer, yet still light, blue */
-            border: 1px solid #90cdf4; /* Add a subtle border for definition */
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Slightly more pronounced shadow */
-        }
-
-        #other_pathways_card .icon {
-            color: #2c5282; /* Darker blue for the icon for contrast */
-        }
-
-        #other_pathways_card h3 {
-            color: #1a202c; /* Ensure title is very dark for readability */
-        }
-
-        #other_pathways_card p {
-            font-size: 0.95rem; /* Slightly increase font size for body text */
-            line-height: 1.5; /* Increase line height for better spacing */
-            color: #2d3748; /* Darker text for better contrast */
-        }
 
         /* Print-specific adjustments to ensure optimal layout on A4 */
         @media print {
@@ -261,1318 +313,688 @@
                 margin: 0;
                 min-height: auto;
                 justify-content: flex-start;
-                background-color: #fff; /* White background for printing */
-                color: #000; /* Black text for printing */
             }
+
             .infographic-side {
                 width: 100%;
-                min-height: auto;
-                margin-bottom: 0;
+                height: 210mm;         /* Exact A4 landscape height */
+                max-height: 210mm;     /* Prevent overflow */
+                max-width: 297mm;      /* Exact A4 landscape width */
+                overflow: hidden;      /* Prevent spillover */
                 box-shadow: none;
                 border-radius: 0;
-                border: none;
+                margin-bottom: 0;
+                padding: 1rem;         /* Tighter padding for print */
+                page-break-after: always;
+                page-break-inside: auto;
+            }
+
+            .infographic-side:last-child {
+                page-break-after: auto;  /* Don’t force break after last */
+            }
+
+            h1 { font-size: 2.2rem !important; margin-bottom: 0.8rem !important; }
+            h2 { font-size: 1.2rem !important; margin-bottom: 0.4rem !important; }
+            h3 { font-size: 1.6rem !important; margin-bottom: 0.5rem !important; }
+            h4 { font-size: 1rem !important; margin-bottom: 0.3rem !important; }
+            p { font-size: 0.85rem !important; }
+            .text-6xl { font-size: 3rem !important; }
+
+            .option-card { padding: 0.5rem !important; }
+            .card-details {
+                font-size: 0.75rem !important;
+                margin-top: 0.4rem !important;
+                padding: 0.5rem !important;
+                max-height: fit-content !important; /* Ensure details are visible when printing */
+                opacity: 1 !important;
+                overflow-y: visible !important; /* Ensure content is not cut off in print */
+            }
+
+            .checkbox-container label {
+                font-size: 0.8rem;
+            }
+            .checkbox-container input[type="checkbox"] {
+                width: 0.8rem; height: 0.8rem;
+            }
+            .checkbox-container input[type="checkbox"]:checked::after {
+                font-size: 0.6rem;
+            }
+
+            .reflection-section {
                 padding: 1.2rem;
             }
-            .option-card, .reflection-section, #other_pathways_card {
-                background-color: transparent !important; /* Remove all card backgrounds */
-                border: 1px solid #ccc !important; /* Add simple border for definition */
+            .reflection-question h3 {
+                font-size: 1.4rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+            .reflection-option label {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+            .fillable-textarea {
+                height: auto !important; /* Allow content to dictate height */
+                min-height: 1rem !important;
+                border: none !important; /* Remove border for cleaner print */
+                background-color: transparent !important;
                 box-shadow: none !important;
+                resize: none !important;
             }
-            .bg-white.bg-opacity-70 { background-color: transparent !important; }
-            h1, h2, h3, h4, p, li, strong, span {
-                color: #000 !important; /* Ensure all text is black */
-                font-size: 10pt !important; /* Standardize font size */
-                line-height: 1.2 !important;
-            }
-            h1 { font-size: 18pt !important; }
-            h2 { font-size: 14pt !important; }
-            h3 { font-size: 16pt !important; }
-            h4 { font-size: 12pt !important; }
-            .text-6xl { font-size: 2.5rem !important; }
-            .language-selector, .option-card:hover { display: none; } /* Hide selector, disable hover effects */
-            .grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; } /* 2 columns for print */
-        }
 
-        /* Mobile-friendly adjustments */
-        @media (max-width: 768px) {
-            body {
-                padding: 1rem;
-            }
-            .infographic-side {
-                width: 100%;
-                min-height: auto;
-                padding: 1rem;
-                margin-bottom: 1rem;
-            }
-            .grid {
-                grid-template-columns: 1fr; /* Stack cards vertically */
-            }
-            h1 { font-size: 2.25rem; }
-            .text-xl { font-size: 1.1rem; }
-            .language-selector {
-                position: static; /* Un-stick the language selector */
-                margin-bottom: 1rem;
-                width: 100%;
-                text-align: center;
-            }
-            .language-selector select { width: 90%; }
-            .reflection-options {
-                flex-direction: column;
-                align-items: center;
-            }
+            .qr-container { display: none !important; } /* Hide QR section for printing */
+        }
+        /* Button styling */
+        .btn-primary {
+            @apply px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition-all duration-200 ease-in-out transform hover:scale-105;
         }
     </style>
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen">
 
-    <div class="language-selector">
-        <select id="languageSelect" onchange="changeLanguage()">
-            <option value="ar">العربية (Arabic)</option>
-            <option value="bn">বাংলা (Bengali)</option>
-            <option value="en" selected>English</option>
-            <option value="zh">普通话 (Mandarin)</option>
-            <option value="uk">Українська (Ukrainian)</option>
-            <option value="ur">اردو (Urdu)</option>
-            <option value="cy">Cymraeg (Welsh)</option>
-        </select>
-    </div>
-
     <div class="infographic-side">
         <div class="text-center mb-8">
             <h1 class="text-5xl md:text-6xl font-extrabold text-blue-800 mb-4 leading-tight tracking-tight">
-                <span class="text-indigo-600" id="main_title_part1">Your Future Unlocked:</span><br>
-                <span id="main_title_part2">Navigating Post-16 Pathways</span>
+                <span class="text-indigo-600">Your Future Unlocked:</span><br>
+                A Student’s Guide to Post-16 Pathways
             </h1>
-            <p class="text-xl text-gray-700 max-w-2xl mx-auto" id="intro_text">
-                Helping your child decide their path after Year 11 can be a big step. This guide explains the main options and how you can support their choices.
+            <p id="intro_subheading" class="text-xl text-gray-800 max-w-2xl mx-auto text-left">
+                Your future after Year 11 is full of pathways and possibilities, this guide can help you understand them and choose what feels right for you.
             </p>
+            <button id="printButton" class="btn-primary mt-6">Print Guide</button>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
 
-            <div class="option-card bg-sky-100 p-6 rounded-2xl shadow-lg border-b-4 border-sky-400 cursor-pointer">
+            <div class="option-card bg-sky-100 p-6 rounded-2xl shadow-lg border-b-4 border-sky-400 cursor-pointer" data-pathway="al">
                 <span class="text-6xl mb-4" role="img" aria-label="Compass Icon">🧭</span>
-                <div class="bg-white p-4 rounded-lg">
-                    <h2 class="text-2xl font-bold text-sky-800 mb-2" id="al_title">A-levels</h2>
-                    <p class="text-gray-700 text-lg" id="al_description">Academic subjects, ideal for university routes.</p>
-                </div>
+                <h2 class="text-2xl font-bold text-sky-800 mb-2 text-left">A-levels</h2>
+                <p class="text-gray-800 text-lg text-left">Academic subjects, ideal for university routes.</p>
+                <button class="toggle-details-btn bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm mt-4 hover:bg-blue-300 transition-colors">Show Details</button>
                 <div class="card-details">
-                    <h4 class="font-bold text-lg mb-3" id="al_key_info_header">Key Info & Reality Check:</h4>
-                    <div class="info-item-box bg-blue-50 border-blue-200">
-                        <p><strong id="al_what_label">What it is:</strong> <span id="al_what_text">A 2-year course studying 3-4 subjects you choose in depth. Focus is on academic theory and knowledge.</span></p>
-                    </div>
-                    <div class="info-item-box bg-yellow-50 border-yellow-200">
-                        <p><strong id="al_entry_label">Entry:</strong> <span id="al_entry_text">Typically 5 or more GCSEs at grades 9-4 (A*-C), often with higher grade requirements (e.g., 6/B) in the chosen subjects.</span></p>
-                    </div>
-                    <div class="info-item-box bg-green-50 border-green-200">
-                        <p><strong id="al_assessment_label">Assessment:</strong> <span id="al_assessment_text">Mainly by <strong>final exams</strong> at the end of the 2 years, with some subjects having a coursework component.</span></p>
-                    </div>
-                    <div class="info-item-box bg-indigo-50 border-indigo-200">
-                        <p><strong id="al_progression_label">Progression:</strong> <span id="al_progression_text">The primary route to <strong>university</strong>. Also respected for Higher/Degree Apprenticeships and direct employment.</span></p>
-                    </div>
-                    <div class="info-item-box bg-red-50 border-red-200">
-                        <p><strong id="al_stereotype_label">The Stereotype:</strong> <span id="al_stereotype_text">"They're the only 'proper' qualification" / "They're only for getting into university."</span></p>
-                    </div>
-                    <div class="info-item-box bg-teal-50 border-teal-200">
-                        <p><strong id="al_reality_label">The Reality:</strong> <span id="al_reality_text">They build deep subject knowledge and strong analytical skills. While they are a key university route, many other pathways also lead to higher education and successful careers.</span></p>
-                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2 text-left">Key Info:</h4>
+                    <ul>
+                        <li>
+                            <span class="icon">💡</span>
+                            <div class="text-content">
+                                <strong>What:</strong> A 2-year academic deep dive into 3–4 subjects you choose.
+                            </div>
+                        </li>
+                        <li>
+                            <span class="icon">✅</span>
+                            <div class="text-content">
+                                <strong>Entry:</strong> Usually 5 GCSEs at grade 4 (C) or above, including English and Maths. Some subjects might need higher grades.
+                            </div>
+                        </li>
+                        <li>
+                            <span class="icon">✍️</span>
+                            <div class="text-content">
+                                <strong>Assessment:</strong> Mostly <strong>final exams</strong> at the end of the two years, with some coursework in certain subjects.
+                            </div>
+                        </li>
+                        <li>
+                            <span class="icon">➡️</span>
+                            <div class="text-content">
+                                <strong>Progression:</strong> The main route to <strong>university</strong> (<span class="font-normal italic text-gray-700">Russell Group universities are leading UK universities, known for their research and academic excellence</span>), also Higher or Degree Apprenticeships.
+                            </div>
+                        </li>
+                        <li class="perception">
+                            <span class="icon">🤔</span>
+                            <div class="text-content">
+                                <strong>What some people might think:</strong> "A-levels are <strong>only</strong> for university" or "they're <strong>too</strong> academic and not for everyone."
+                            </div>
+                        </li>
+                        <li class="reality">
+                            <span class="icon">✨</span>
+                            <div class="text-content">
+                                <strong>But actually:</strong> They help you develop strong analytical and critical thinking skills, opening up many diverse university courses and career paths. Not the <strong>only</strong> way to get to uni!
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <p id="al_reflection_prompt" class="text-sm text-gray-500 italic mt-2"></p>
+                <div class="checkbox-container">
+                    <label><input type="checkbox" name="al_yes"> Sounds like me!</label>
+                    <label><input type="checkbox" name="al_no"> Not quite right</label>
+                    <label><input type="checkbox" name="al_notsure"> Tell me more</label>
+                </div>
             </div>
 
-            <div class="option-card bg-emerald-100 p-6 rounded-2xl shadow-lg border-b-4 border-emerald-400 cursor-pointer">
+            <div class="option-card bg-emerald-100 p-6 rounded-2xl shadow-lg border-b-4 border-emerald-400 cursor-pointer" data-pathway="btec">
                 <span class="text-6xl mb-4" role="img" aria-label="Gear Icon">⚙️</span>
-                <div class="bg-white p-4 rounded-lg">
-                    <h2 class="text-2xl font-bold text-emerald-800 mb-2" id="btec_title">BTECs</h2>
-                    <p class="text-gray-700 text-lg" id="btec_description">Practical and coursework-based, focusing on vocational skills.</p>
-                </div>
+                <h2 class="text-2xl font-bold text-emerald-800 mb-2 text-left">BTECs</h2>
+                <p class="text-gray-800 text-lg text-left">Practical and coursework-based, focusing on vocational skills.</p>
+                <button class="toggle-details-btn bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm mt-4 hover:bg-blue-300 transition-colors">Show Details</button>
                 <div class="card-details">
-                    <h4 class="font-bold text-lg mb-3" id="btec_key_info_header">Key Info & Reality Check:</h4>
-                    <div class="info-item-box bg-blue-50 border-blue-200">
-                        <p><strong id="btec_what_label">What it is:</strong> <span id="btec_what_text">Applied, practical learning in a specific sector like Health, Business, or IT, often with real-world case studies.</span></p>
-                    </div>
-                    <div class="info-item-box bg-yellow-50 border-yellow-200">
-                        <p><strong id="btec_entry_label">Entry:</strong> <span id="btec_entry_text">Varies by course and level, but typically 4-5 GCSEs at grades 9-4 (A*-C).</span></p>
-                    </div>
-                    <div class="info-item-box bg-green-50 border-green-200">
-                        <p><strong id="btec_assessment_label">Assessment:</strong> <span id="btec_assessment_text">Primarily through <strong>coursework</strong>, projects, and practical assignments. Fewer final exams than A-Levels.</span></p>
-                    </div>
-                    <div class="info-item-box bg-indigo-50 border-indigo-200">
-                        <p><strong id="btec_progression_label">Progression:</strong> <span id="btec_progression_text">Excellent route to university (accepted by 95%), apprenticeships, or directly into employment.</span></p>
-                    </div>
-                    <div class="info-item-box bg-red-50 border-red-200">
-                        <p><strong id="btec_stereotype_label">The Stereotype:</strong> <span id="btec_stereotype_text">"They're an easier option" / "Not as respected as A-Levels."</span></p>
-                    </div>
-                    <div class="info-item-box bg-teal-50 border-teal-200">
-                        <p><strong id="btec_reality_label">The Reality:</strong> <span id="btec_reality_text">They are rigorous qualifications that develop practical, real-world skills highly valued by both employers and universities.</span></p>
-                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2 text-left">Key Info:</h4>
+                    <ul>
+                        <li>
+                            <span class="icon">💡</span>
+                            <div class="text-content">
+                                <strong>What:</strong> Applied learning in specific sectors like Health, Business, or Sport. You learn by doing, often focusing on real-world projects. <br> <strong>Note:</strong> BTEC qualifications are evolving! While many BTECs are being updated or replaced by exciting new options like T-Levels from 2026, existing courses remain valid. Your college or careers advisor can give you the latest info on what's available.
+                            </div>
+                        </li>
+                        <li>
+                            <span class="icon">✅</span>
+                            <div class="text-content">
+                                <strong>Entry:</strong>
+                                <br> - <strong>Level 2 (e.g., Extended Certificate):</strong> Often 4 GCSEs at grade 3 (D) or above.
+                                <br> - <strong>Level 3 (e.g., Extended Diploma):</strong> Usually 5 GCSEs at grade 4 (C) or above, including English and Maths. Entry requirements can vary by college and course – always check the provider’s website!
+                            </div>
+                        </li>
+                        <li>
+                            <span class="icon">📋</span>
+                            <div class="text-content">
+                                <strong>Assessment:</strong> Mainly <strong>coursework and projects</strong>, with some exams or practical assessments. It’s more continuous assessment.
+                            </div>
+                        </li>
+                        <li>
+                            <span class="icon">➡️</span>
+                            <div class="text-content">
+                                <strong>Progression:</strong> Accepted by many <strong>universities</strong> (equivalent to 1-3 A-levels, depending on the BTEC), apprenticeships, or direct employment. <br> <strong>Example:</strong> Ellie took a BTEC in Health & Social Care and now studying Nursing at university.
+                            </div>
+                        </li>
+                        <li class="perception">
+                            <span class="icon">🤔</span>
+                            <div class="text-content">
+                                <strong>What some people might think:</strong> "BTECs are 'easier' than A-levels" or "they're not for uni if you want a good one."
+                            </div>
+                        </li>
+                        <li class="reality">
+                            <span class="icon">✨</span>
+                            <div class="text-content">
+                                <strong>But actually:</strong> They are rigorous and develop valuable real-world skills. They're great if you prefer continuous assessment and practical application, and many universities accept them!
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <p id="btec_reflection_prompt" class="text-sm text-gray-500 italic mt-2"></p>
+                <div class="checkbox-container">
+                    <label><input type="checkbox" name="btec_yes"> Sounds like me!</label>
+                    <label><input type="checkbox" name="btec_no"> Not quite right</label>
+                    <label><input type="checkbox" name="btec_notsure"> Tell me more</label>
+                </div>
             </div>
 
-            <div class="option-card bg-amber-100 p-6 rounded-2xl shadow-lg border-b-4 border-amber-400 cursor-pointer">
-                <span class="text-6xl mb-4" role="img" aria-label="Briefcase Icon">💼</span>
-                <div class="bg-white p-4 rounded-lg">
-                    <h2 class="text-2xl font-bold text-amber-800 mb-2" id="tl_title">T-Levels</h2>
-                    <p class="text-gray-700 text-lg" id="tl_description">A mix of classroom learning and a long industry placement.</p>
-                </div>
+            <div class="option-card bg-purple-100 p-6 rounded-2xl shadow-lg border-b-4 border-purple-400 cursor-pointer" data-pathway="tlevel">
+                <span class="text-6xl mb-4" role="img" aria-label="Building Icon">🏢</span>
+                <h2 class="text-2xl font-bold text-purple-800 mb-2 text-left">T-Levels</h2>
+                <p class="text-gray-800 text-lg text-left">A mix of classroom learning and significant real work experience.</p>
+                <button class="toggle-details-btn bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm mt-4 hover:bg-blue-300 transition-colors">Show Details</button>
                 <div class="card-details">
-                    <h4 class="font-bold text-lg mb-3" id="tl_key_info_header">Key Info & Reality Check:</h4>
-                    <div class="info-item-box bg-blue-50 border-blue-200">
-                        <p><strong id="tl_what_label">What it is:</strong> <span id="tl_what_text">A blend of 80% classroom learning and 20% on-the-job experience, including a 45-day (minimum) industry placement.</span></p>
-                    </div>
-                    <div class="info-item-box bg-yellow-50 border-yellow-200">
-                        <p><strong id="tl_entry_label">Entry:</strong> <span id="tl_entry_text">Varies, but generally requires 5 GCSEs including English and Maths at grade 4 or above.</span></p>
-                    </div>
-                    <div class="info-item-box bg-green-50 border-green-200">
-                        <p><strong id="tl_assessment_label">Assessment:</strong> <span id="tl_assessment_text">A mix of exams, practical projects, and a review from the placement employer.</span></p>
-                    </div>
-                    <div class="info-item-box bg-indigo-50 border-indigo-200">
-                        <p><strong id="tl_progression_label">Progression:</strong> <span id="tl_progression_text">Leads to skilled employment, Higher Apprenticeships, or university (UCAS points are awarded).</span></p>
-                    </div>
-                    <div class="info-item-box bg-red-50 border-red-200">
-                        <p><strong id="tl_stereotype_label">The Stereotype:</strong> <span id="tl_stereotype_text">"They're just for trades" / "They're too new and unproven."</span></p>
-                    </div>
-                    <div class="info-item-box bg-teal-50 border-teal-200">
-                        <p><strong id="tl_reality_label">The Reality:</strong> <span id="tl_reality_text">Equivalent to 3 A-Levels, they provide valuable, real-world experience and are co-designed with leading employers.</span></p>
-                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2 text-left">Key Info:</h4>
+                    <ul>
+                        <li>
+                            <span class="icon">💡</span>
+                            <div class="text-content">
+                                <strong>What:</strong> Brand new 2-year technical programmes. You spend 80% of your time in the classroom learning core theory and specialist skills, and 20% on a substantial industry placement (at least 45 days!).
+                            </div>
+                        </li>
+                        <li>
+                            <span class="icon">✅</span>
+                            <div class="text-content">
+                                <strong>Entry:</strong> Typically 5 GCSEs at grade 4 (C) or above, including English & Maths.
+                            </div>
+                        </li>
+                        <li>
+                            <span class="icon">📋</span>
+                            <div class="text-content">
+                                <strong>Assessment:</strong> A mix of exams, practical assessments, and a big <strong>employer-set project</strong> based on real-world scenarios.
+                            </div>
+                        </li>
+                        <li>
+                            <span class="icon">➡️</span>
+                            <div class="text-content">
+                                <strong>Progression:</strong> They're equivalent to <strong>3 A-levels</strong> and are accepted by many universities for relevant degrees, or you can go straight into skilled employment or higher apprenticeships.
+                            </div>
+                        </li>
+                        <li class="perception">
+                            <span class="icon">🤔</span>
+                            <div class="text-content">
+                                <strong>What some people might think:</strong> "T-Levels are <strong>only</strong> for those who don't want to go to university."
+                            </div>
+                        </li>
+                        <li class="reality">
+                            <span class="icon">✨</span>
+                            <div class="text-content">
+                                <strong>But actually:</strong> They were designed by employers to give you job-ready skills AND real experience. Many universities (including Russell Group universities - <span class="font-normal italic text-gray-700">these are leading UK universities, known for their research and academic excellence</span>) now accept T-Levels for a wide range of courses!
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <p id="tl_reflection_prompt" class="text-sm text-gray-500 italic mt-2"></p>
+                <div class="checkbox-container">
+                    <label><input type="checkbox" name="tlevel_yes"> Sounds like me!</label>
+                    <label><input type="checkbox" name="tlevel_no"> Not quite right</label>
+                    <label><input type="checkbox" name="tlevel_notsure"> Tell me more</label>
+                </div>
             </div>
 
-            <div class="option-card bg-rose-100 p-6 rounded-2xl shadow-lg border-b-4 border-rose-400 cursor-pointer">
+            <div class="option-card bg-indigo-100 p-6 rounded-2xl shadow-lg border-b-4 border-indigo-400 cursor-pointer" data-pathway="ib">
                 <span class="text-6xl mb-4" role="img" aria-label="Globe Icon">🌍</span>
-                <div class="bg-white p-4 rounded-lg">
-                    <h2 class="text-2xl font-bold text-rose-800 mb-2" id="ib_title">IB Diploma</h2>
-                    <p class="text-gray-700 text-lg" id="ib_description">A broad, international curriculum with six subjects.</p>
-                </div>
+                <h2 class="text-2xl font-bold text-indigo-800 mb-2 text-left">IB (International Baccalaureate) Diploma</h2>
+                <p class="text-gray-800 text-lg text-left">Broad academic study with a global focus, often leading to university.</p>
+                <button class="toggle-details-btn bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm mt-4 hover:bg-blue-300 transition-colors">Show Details</button>
                 <div class="card-details">
-                    <h4 class="font-bold text-lg mb-3" id="ib_key_info_header">Key Info & Reality Check:</h4>
-                    <div class="info-item-box bg-blue-50 border-blue-200">
-                        <p><strong id="ib_what_label">What it is:</strong> <span id="ib_what_text">A comprehensive 2-year programme studying 6 subjects (from languages to sciences), plus a core programme focusing on critical thinking and research.</span></p>
-                    </div>
-                    <div class="info-item-box bg-yellow-50 border-yellow-200">
-                        <p><strong id="ib_entry_label">Entry:</strong> <span id="ib_entry_text">Demanding entry requirements, typically needing at least 5 GCSEs at grade 7-9 (A-A*).</span></p>
-                    </div>
-                    <div class="info-item-box bg-green-50 border-green-200">
-                        <p><strong id="ib_assessment_label">Assessment:</strong> <span id="ib_assessment_text">A combination of final exams and extensive coursework, including a major independent research project (the Extended Essay).</span></p>
-                    </div>
-                    <div class="info-item-box bg-indigo-50 border-indigo-200">
-                        <p><strong id="ib_progression_label">Progression:</strong> <span id="ib_progression_text">An excellent qualification for applying to top UK and international universities.</span></p>
-                    </div>
-                    <div class="info-item-box bg-red-50 border-red-200">
-                        <p><strong id="ib_stereotype_label">The Stereotype:</strong> <span id="ib_stereotype_text">"It's only for geniuses" / "The workload is impossible."</span></p>
-                    </div>
-                    <div class="info-item-box bg-teal-50 border-teal-200">
-                        <p><strong id="ib_reality_label">The Reality:</strong> <span id="ib_reality_text">It is academically challenging but develops exceptional time management, research skills, and a global perspective.</span></p>
-                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2 text-left">Key Info:</h4>
+                    <ul>
+                        <li>
+                            <span class="icon">💡</span>
+                            <div class="text-content">
+                                <strong>What:</strong> A global 2-year diploma where you study 6 subjects (3 at Higher Level, 3 at Standard Level) plus a core of extended essay writing, a Theory of Knowledge course, and creativity, activity, service (CAS) projects. <br> <strong>Note:</strong> Not all schools/colleges offer the IB Diploma, so availability varies by location.
+                            </div>
+                        </li>
+                        <li>
+                            <span class="icon">✅</span>
+                            <div class="text-content">
+                                <strong>Entry:</strong> Generally requires high GCSE grades across a range of subjects (varies by school/college).
+                            </div>
+                        </li>
+                        <li>
+                            <span class="icon">✍️</span>
+                            <div class="text-content">
+                                <strong>Assessment:</strong> A good mix of <strong>final exams and internal assessments</strong> throughout the course (e.g., essays, presentations, practicals).
+                            </div>
+                        </li>
+                        <li>
+                            <span class="icon">➡️</span>
+                            <div class="text-content">
+                                <strong>Progression:</strong> Highly valued for <strong>university</strong> entry worldwide (including top UK universities) because it shows a broad education and strong critical thinking skills.
+                            </div>
+                        </li>
+                        <li class="perception">
+                            <span class="icon">🤔</span>
+                            <div class="text-content">
+                                <strong>What some people might think:</strong> "It's <strong>only</strong> for international students" or "it's <strong>too</strong> difficult and stressful."
+                            </div>
+                        </li>
+                        <li class="reality">
+                            <span class="icon">✨</span>
+                            <div class="text-content">
+                                <strong>But actually:</strong> It provides an excellent all-round education, prepares you really well for university, and gives you a fantastic global perspective.
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <p id="ib_reflection_prompt" class="text-sm text-gray-500 italic mt-2"></p>
+                <div class="checkbox-container">
+                    <label><input type="checkbox" name="ib_yes"> Sounds like me!</label>
+                    <label><input type="checkbox" name="ib_no"> Not quite right</label>
+                    <label><input type="checkbox" name="ib_notsure"> Tell me more</label>
+                </div>
             </div>
 
-            <div class="option-card bg-violet-100 p-6 rounded-2xl shadow-lg border-b-4 border-violet-400 cursor-pointer">
-                <span class="text-6xl mb-4" role="img" aria-label="Wrench Icon">🔧</span>
-                <div class="bg-white p-4 rounded-lg">
-                    <h2 class="text-2xl font-bold text-violet-800 mb-2" id="app_title">Apprenticeships</h2>
-                    <p class="text-gray-700 text-lg" id="app_description">Earn while you learn in a real job with training.</p>
-                </div>
+            <div class="option-card bg-amber-100 p-6 rounded-2xl shadow-lg border-b-4 border-amber-400 cursor-pointer" data-pathway="app">
+                <span class="text-6xl mb-4" role="img" aria-label="Wrench Icon">🛠️</span>
+                <h2 class="text-2xl font-bold text-amber-800 mb-2 text-left">Apprenticeships</h2>
+                <p class="text-gray-800 text-lg text-left">Get paid to learn a job, gaining qualifications along the way.</p>
+                <button class="toggle-details-btn bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm mt-4 hover:bg-blue-300 transition-colors">Show Details</button>
                 <div class="card-details">
-                    <h4 class="font-bold text-lg mb-3" id="app_key_info_header">Key Info & Reality Check:</h4>
-                    <div class="info-item-box bg-blue-50 border-blue-200">
-                        <p><strong id="app_what_label">What it is:</strong> <span id="app_what_text">A full-time job with structured training. At least 20% of the time is spent in 'off-the-job' training with a college or training provider.</span></p>
-                    </div>
-                    <div class="info-item-box bg-yellow-50 border-yellow-200">
-                        <p><strong id="app_entry_label">Entry:</strong> <span id="app_entry_text">Varies hugely by level (Intermediate, Advanced, Higher, Degree). Some have no formal requirements, others require A-Levels or equivalent.</span></p>
-                    </div>
-                    <div class="info-item-box bg-green-50 border-green-200">
-                        <p><strong id="app_assessment_label">Assessment:</strong> <span id="app_assessment_text">Continuous assessment of on-the-job skills and knowledge-based tests, culminating in an End-Point Assessment (EPA).</span></p>
-                    </div>
-                    <div class="info-item-box bg-indigo-50 border-indigo-200">
-                        <p><strong id="app_progression_label">Progression:</strong> <span id="app_progression_text">A full-time role, promotion, or progression to a higher-level apprenticeship (up to degree and master's level).</span></p>
-                    </div>
-                    <div class="info-item-box bg-red-50 border-red-200">
-                        <p><strong id="app_stereotype_label">The Stereotype:</strong> <span id="app_stereotype_text">"They're low-paid and just for manual trades."</span></p>
-                    </div>
-                    <div class="info-item-box bg-teal-50 border-teal-200">
-                        <p><strong id="app_reality_label">The Reality:</strong> <span id="app_reality_text">Available in over 1,500 job roles, from law to digital marketing. Salaries increase with experience and level.</span></p>
-                    </div>
+                    <h4 class="font-bold text-gray-800 mb-2 text-left">Key Info:</h4>
+                    <ul>
+                        <li>
+                            <span class="icon">💡</span>
+                            <div class="text-content">
+                                <strong>What:</strong> A real job with a real salary, combined with structured training (at least 20% of your time is spent on 'off-the-job' study). They come in various levels, from Level 2 (equivalent to GCSEs) all the way up to Level 7 (equivalent to a Master's degree!).
+                            </div>
+                        </li>
+                        <li>
+                            <span class="icon">✅</span>
+                            <div class="text-content">
+                                <strong>Entry:</strong> Entry requirements vary hugely by the level of the apprenticeship and the employer. Some need specific GCSEs, others focus more on your attitude and potential.
+                            </div>
+                        </li>
+                        <li>
+                            <span class="icon">📋</span>
+                            <div class="text-content">
+                                <strong>Assessment:</strong> Continuous assessment in the workplace, building a portfolio of your skills, and a final <strong>end-point assessment</strong> once you've completed your training.
+                            </div>
+                        </li>
+                        <li>
+                            <span class="icon">➡️</span>
+                            <div class="text-content">
+                                <strong>Progression:</strong> Leads directly to skilled <strong>employment</strong>, or you can progress to higher-level apprenticeships (including Degree Apprenticeships, where you earn a degree without student debt!). <br> <strong>Example:</strong> Rashid started a Level 3 Digital Marketing apprenticeship and now works full-time at a creative agency.
+                            </div>
+                        </li>
+                        <li class="perception">
+                            <span class="icon">🤔</span>
+                            <div class="text-content">
+                                <strong>What some people might think:</strong> "Apprenticeships are <strong>only</strong> for manual trades" or "they're less academic and won't get me far."
+                            </div>
+                        </li>
+                        <li class="reality">
+                            <span class="icon">✨</span>
+                            <div class="text-content">
+                                <strong>But actually:</strong> They are available in hundreds of industries (think tech, finance, law, creative arts, healthcare!). They offer a fantastic way to gain valuable work experience and a qualification, sometimes even a degree, without university debt.
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <p id="app_reflection_prompt" class="text-sm text-gray-500 italic mt-2"></p>
+                <div class="checkbox-container">
+                    <label><input type="checkbox" name="app_yes"> Sounds like me!</label>
+                    <label><input type="checkbox" name="app_no"> Not quite right</label>
+                    <label><input type="checkbox" name="checkbox" name="app_notsure"> Tell me more</label>
+                </div>
             </div>
 
-            <div class="option-card bg-slate-100 p-6 rounded-2xl shadow-lg border-b-4 border-slate-400 cursor-pointer">
-                <span class="text-6xl mb-4" role="img" aria-label="Lightbulb Icon">💡</span>
-                <div class="bg-white p-4 rounded-lg">
-                    <h2 class="text-2xl font-bold text-slate-800 mb-2" id="work_title">Work with Training</h2>
-                    <p class="text-gray-700 text-lg" id="work_description">Entering the workforce with recognised training.</p>
-                </div>
+            <div class="option-card bg-teal-100 p-6 rounded-2xl shadow-lg border-b-4 border-teal-400 cursor-pointer" data-pathway="wwt">
+                <span class="text-6xl mb-4" role="img" aria-label="Briefcase with Person Icon">👨‍💼</span>
+                <h2 class="text-2xl font-bold text-teal-800 mb-2 text-left">Work with Training</h2>
+                <p class="text-gray-800 text-lg text-left">Entry-level work combined with part-time learning or qualifications.</p>
+                <button class="toggle-details-btn bg-blue-200 text-blue-800 px-3 py-1 rounded-full text-sm mt-4 hover:bg-blue-300 transition-colors">Show Details</button>
                 <div class="card-details">
-                    <h4 class="font-bold text-lg mb-3" id="work_key_info_header">Key Info & Reality Check:</h4>
-                    <div class="info-item-box bg-blue-50 border-blue-200">
-                        <p><strong id="work_what_label">What it is:</strong> <span id="work_what_text">Starting a job straight from school that includes structured, employer-funded training, leading to recognised qualifications (e.g., NVQs).</span></p>
+                    <h4 class="font-bold text-gray-800 mb-2 text-left">Key Info:</h4>
+                    <ul>
+                        <li>
+                            <span class="icon">💡</span>
+                            <div class="text-content">
+                                <strong>What:</strong> This could be direct employment (paid or voluntary) combined with part-time college courses or employer-led training programmes (like Supported Internships).
+                            </div>
+                        </li>
+                        <li>
+                            <span class="icon">✅</span>
+                            <div class="text-content">
+                                <strong>Entry:</strong> Varies widely depending on the specific job or training. Often, they focus on your enthusiasm and basic literacy/numeracy skills.
+                            </div>
+                        </li>
+                        <li>
+                            <span class="icon">📋</span>
+                            <div class="text-content">
+                                <strong>Assessment:</strong> Could include vocational assessments, assignments, or working towards essential GCSEs or Functional Skills qualifications.
+                            </div>
+                        </li>
+                        <li>
+                            <span class="icon">➡️</span>
+                            <div class="text-content">
+                                <strong>Progression:</strong> Helps you build immediate work experience and practical skills. It can be a stepping stone to an apprenticeship, further education, or direct career progression within a company.
+                            </div>
+                        </li>
+                        <li class="perception">
+                            <span class="icon">🤔</span>
+                            <div class="text-content">
+                                <strong>What some people might think:</strong> "It's just a job, not a proper career pathway."
+                            </div>
+                        </li>
+                        <li class="reality">
+                            <span class="icon">✨</span>
+                            <div class="text-content">
+                                <strong>But actually:</strong> It's a great way to gain independence quickly and develop valuable practical skills. These pathways often include support for improving essential skills like English and Maths, which can open many doors for your future.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="checkbox-container">
+                    <label><input type="checkbox" name="wwt_yes"> Sounds like me!</label>
+                    <label><input type="checkbox" name="wwt_no"> Not quite right</label>
+                    <label><input type="checkbox" name="wwt_notsure"> Tell me more</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-6 rounded-2xl shadow-lg text-base text-blue-900 mt-8 w-full max-w-5xl mx-auto flex items-start gap-4 text-left">
+            <span class="text-5xl flex-shrink-0" role="img" aria-label="Helping Hands Icon">🤝</span>
+            <div>
+                <h3 class="text-xl font-bold text-blue-900 mb-2">Other Tailored Pathways to Consider:</h3>
+                <p class="text-base">
+                    For some students, especially if you have an Education, Health and Care Plan (EHCP) or additional needs, there are pathways designed with extra support. These include:
+                </p>
+                <ul class="list-disc list-inside mt-2 space-y-1">
+                    <li><strong>Supported Internships:</strong> Focused on helping you gain work experience and skills, often with a dedicated job coach.</li>
+                    <li><strong>Supported Apprenticeships:</strong> Similar to a regular apprenticeship but with additional support tailored to your needs.</li>
+                    <li><strong>Prince's Trust Programmes:</strong> Offer various courses and support to build confidence, gain new skills, and help you get into employment, education, or training.</li>
+                </ul>
+                <p class="text-base mt-2">
+                    Always talk to your careers adviser or SENCO (Special Educational Needs Coordinator) about what support is available and what options would best suit you.
+                </p>
+            </div>
+        </div>
+
+        <div class="qr-container">
+            <div class="qr-section">
+                <h3 class="text-2xl font-bold text-blue-800 text-center w-full">Explore More: Career Quizzes</h3>
+                <div class="qr-blocks-wrapper">
+                    <div class="qr-block">
+                        <h4 class="text-lg font-semibold text-gray-700">Try a Career Quiz (Careerpilot)</h4>
+                        <a href="https://www.careerpilot.org.uk/information/buzz-quiz" target="_blank" class="block">
+                          <img src="qr_careerpilot.png" alt="QR Code for Careerpilot" width="150" height="150" title="QR Code for Careerpilot">
+                        </a>
+                        <p class="text-sm text-gray-600">
+                          Scan or
+                          <a href="https://www.careerpilot.org.uk/career-quiz" target="_blank" class="text-blue-600 hover:underline">
+                            click here
+                          </a>
+                          to explore your options with Careerpilot!
+                        </p>
                     </div>
-                    <div class="info-item-box bg-yellow-50 border-yellow-200">
-                        <p><strong id="work_entry_label">Entry:</strong> <span id="work_entry_text">Often depends more on attitude and potential than specific academic grades. A strong CV and interview are key.</span></p>
-                    </div>
-                    <div class="info-item-box bg-green-50 border-green-200">
-                        <p><strong id="work_assessment_label">Assessment:</strong> <span id="work_assessment_text">A combination of on-the-job performance reviews and completing the requirements of the training course.</span></p>
-                    </div>
-                    <div class="info-item-box bg-indigo-50 border-indigo-200">
-                        <p><strong id="work_progression_label">Progression:</strong> <span id="work_progression_text">Can lead to rapid career advancement, further professional qualifications, and sometimes higher-level apprenticeships.</span></p>
-                    </div>
-                    <div class="info-item-box bg-red-50 border-red-200">
-                        <p><strong id="work_stereotype_label">The Stereotype:</strong> <span id="work_stereotype_text">"It's a dead-end job with no real qualifications."</span></p>
-                    </div>
-                    <div class="info-item-box bg-teal-50 border-teal-200">
-                        <p><strong id="work_reality_label">The Reality:</strong> <span id="work_reality_text">A fantastic way to gain real-world experience and industry-recognised qualifications without student debt, providing a head start in a career.</span></p>
+                    <div class="qr-block">
+                        <h4 class="text-lg font-semibold text-gray-700">Try a Career Quiz (National Careers Service)</h4>
+                        <a href="https://nationalcareers.service.gov.uk/skills-assessment" target="_blank" class="block">
+                          <img src="qr_ncs.png" alt="QR Code for National Careers Service" width="150" height="150" title="QR Code for National Careers Service">
+                        </a>
+                        <p class="text-sm text-gray-600">
+                          Scan or
+                          <a href="https://nationalcareers.service.gov.uk/skills-assessment" target="_blank" class="text-blue-600 hover:underline">
+                            click here
+                          </a>
+                          for the National Careers Service Skills Assessment.
+                        </p>
                     </div>
                 </div>
-                 <p id="work_reflection_prompt" class="text-sm text-gray-500 italic mt-2"></p>
             </div>
         </div>
-        <div id="other_pathways_card" class="w-full max-w-5xl mt-8 p-8 rounded-2xl bg-blue-50 border border-blue-200">
-            <div class="text-center">
-                <span class="icon text-5xl mb-4" role="img" aria-label="Magnifying Glass Icon">🔍</span>
-                <h3 class="text-3xl font-extrabold text-blue-800 mb-3" id="other_pathways_title">Other Pathways & Support</h3>
-                <p class="text-lg text-gray-700" id="other_pathways_text">Some students choose pathways not shown on the main grid that can be just as valuable. Some students join the <strong>Armed Forces</strong>, where training, qualifications, and career development are combined with service. Entry-level work or sector-specific training programmes can also help young people build skills and progress to an apprenticeship or further education. For those who need additional support, pathways like <strong>supported internships</strong> and <strong>supported apprenticeships</strong> offer structured help for young people with Education, Health and Care Plans (EHCPs) or additional needs. These involve on-the-job training with a strong focus on building independence and employability. Talk to your school, college, or local careers service to find out what's available and what would best support your child's goals.</p>
-            </div>
-        </div>
+
+
     </div>
 
     <div class="infographic-side">
+        <div class="reflection-section bg-gray-100 p-8 rounded-2xl shadow-inner w-full max-w-5xl mb-8 border-t-4 border-gray-300">
+            <p class="text-base text-gray-700 italic mb-4 text-left">
+                💡 There’s no single 'right' answer – your journey is unique! Use these prompts to guide your thinking during our session and afterwards.
+            </p>
 
-        <div class="w-full max-w-5xl reflection-section bg-gray-800 text-white p-8 rounded-2xl">
-            <div class="text-center mb-10">
-                <h3 class="text-4xl font-extrabold text-white mb-3" id="reflect_header"></h3>
-            </div>
+            <h3 class="text-3xl font-extrabold text-gray-900 mb-6 text-left">Let’s Talk About You!</h3>
+            <h4 class="text-2xl font-bold text-gray-900 mb-6 text-left">Time to Reflect: What Suits YOU?</h4>
 
             <div class="reflection-question">
-                <h4 class="text-xl font-bold text-white mb-2" id="learning_style_question"></h4>
-                <p class="text-gray-300 mb-4" id="learning_style_prompt"></p>
+                <p class="text-xl font-semibold text-gray-800 mb-4 text-left">Tick any that apply: I learn best when I'm...</p>
                 <div class="reflection-options">
-                    <div class="reflection-option"><input type="checkbox" id="chk_doing"><label for="chk_doing" id="label_learning_doing_parent"></label></div>
-                    <div class="reflection-option"><input type="checkbox" id="chk_writing"><label for="chk_writing" id="label_learning_writing_parent"></label></div>
-                    <div class="reflection-option"><input type="checkbox" id="chk_talking"><label for="chk_talking" id="label_learning_talking_parent"></label></div>
-                    <div class="reflection-option"><input type="checkbox" id="chk_watching"><label for="chk_watching" id="label_learning_watching_parent"></label></div>
-                    <div class="reflection-option"><input type="checkbox" id="chk_building"><label for="chk_building" id="label_learning_building_parent"></label></div>
+                    <div class="reflection-option">
+                        <input type="checkbox" id="learning_doing">
+                        <label for="learning_doing">Doing things practically</label>
+                    </div>
+                    <div class="reflection-option">
+                        <input type="checkbox" id="learning_writing">
+                        <label for="learning_writing">Reading & writing lots</label>
+                    </div>
+                    <div class="reflection-option">
+                        <input type="checkbox" id="learning_talking">
+                        <label for="learning_talking">Discussing ideas & collaborating</label>
+                    </div>
+                    <div class="reflection-option">
+                        <input type="checkbox" id="learning_watching">
+                        <label for="learning_watching">Observing and watching others</label>
+                    </div>
+                    <div class="reflection-option">
+                        <input type="checkbox" id="learning_building">
+                        <label for="learning_building">Building or making things</label>
+                    </div>
                 </div>
+                <p class="text-sm text-gray-700 italic mt-2 text-left">
+                    💡 <strong>Thinking Prompt:</strong> Think about subjects you enjoy or hobbies you love. How do you learn new skills there?
+                </p>
             </div>
 
             <div class="reflection-question">
-                <h4 class="text-xl font-bold text-white mb-2" id="aspirations_question"></h4>
-                <p class="text-gray-300 mb-4" id="aspirations_prompt"></p>
+                <p class="text-xl font-semibold text-gray-800 mb-4 text-left">In my future, I would like to...</p>
                 <div class="reflection-options">
-                    <div class="reflection-option"><input type="checkbox" id="chk_uni"><label for="chk_uni" id="label_goal_university_parent"></label></div>
-                    <div class="reflection-option"><input type="checkbox" id="chk_earn"><label for="chk_earn" id="label_goal_earn_money_parent"></label></div>
-                    <div class="reflection-option"><input type="checkbox" id="chk_exp"><label for="chk_exp" id="label_goal_real_experience_parent"></label></div>
-                    <div class="reflection-option"><input type="checkbox" id="chk_explore"><label for="chk_explore" id="label_goal_try_different_parent"></label></div>
+                    <div class="reflection-option">
+                        <input type="checkbox" id="goal_university">
+                        <label for="goal_university">Go to university</label>
+                    </div>
+                    <div class="reflection-option">
+                        <input type="checkbox" id="goal_earn_money">
+                        <label for="goal_earn_money">Start earning money & learn on the job</label>
+                    </div>
+                    <div class="reflection-option">
+                        <input type="checkbox" id="goal_real_experience">
+                        <label for="goal_real_experience">Gain real-world work experience ASAP</label>
+                    </div>
+                    <div class="reflection-option">
+                        <input type="checkbox" id="goal_try_different">
+                        <label for="goal_try_different">Explore different things before committing</label>
+                    </div>
                 </div>
+                <p class="text-sm text-gray-700 italic mt-2 text-left">
+                    💡 <strong>Thinking Prompt:</strong> What kind of work would make you feel fulfilled? What impact do you hope to have, big or small?
+                </p>
             </div>
 
-            <div class="text-center my-10">
-                <h3 class="text-4xl font-extrabold text-white mb-3" id="compare_decide_header"></h3>
-            </div>
+            <p class="mt-6 text-gray-800 text-lg text-left">
+                <strong>If you have additional needs, talk to your careers adviser or SENCO about what support is available at each provider.</strong>
+            </p>
+        </div>
 
-            <div class="reflection-question">
-                <h4 class="text-xl font-bold text-white mb-2" id="good_fit_question"></h4>
-                <p class="text-gray-300 mb-4" id="good_fit_prompt"></p>
-                <div class="fillable-line"></div>
-                <div class="fillable-line"></div>
-            </div>
+        <div class="reflection-section bg-gray-100 p-8 rounded-2xl shadow-inner w-full max-w-5xl mb-8 border-t-4 border-gray-300">
+            <h3 class="text-3xl font-bold text-gray-900 mb-6 text-left">Compare & Decide</h3>
 
-            <div class="reflection-question">
-                <h4 class="text-xl font-bold text-white mb-2" id="learn_more_question"></h4>
-                <p class="text-gray-300 mb-4" id="talk_through_learn_more_prompt"></p>
-                <div class="fillable-line"></div>
-                <div class="fillable-line"></div>
+            <div class="mb-6">
+                <p class="text-xl font-semibold text-gray-800 mb-2 text-left">Which pathway(s) feel like a good fit for <strong>you</strong> right now? <span class="text-base font-normal text-gray-700 block">(e.g., "I think [Pathway Name] might suit me because...")</span></p>
+                <textarea id="pathway_good_fit" class="fillable-textarea" placeholder="Write your thoughts here..."></textarea>
+                <p class="text-sm text-gray-700 italic mt-2 text-left">
+                    💡 <strong>Thinking Prompt:</strong> Which of these options genuinely excite you? Which ones align with your strengths, even if they seem a little challenging?
+                </p>
             </div>
-
-            <div class="text-center my-10">
-                <h3 class="text-4xl font-extrabold text-white mb-3" id="next_steps_header"></h3>
-            </div>
-
-            <div class="reflection-question">
-                <h4 class="text-xl font-bold text-white mb-2" id="parent_next_step_prompt"></h4>
-                <p class="text-gray-300 mb-4" id="next_step_prompt_text"></p>
-                <div class="fillable-line"></div>
-                <div class="fillable-line"></div>
-            </div>
-
-            <div class="reflection-question">
-                <h4 class="text-xl font-bold text-white mb-2" id="parent_questions_prompt"></h4>
-                <p class="text-gray-300 mb-4" id="parent_questions_prompt_text"></p>
-                <div class="fillable-line"></div>
-                <div class="fillable-line"></div>
-            </div>
-
-            <div class="reflection-question">
-                <h4 class="text-xl font-bold text-white mb-2" id="parent_who_to_talk_prompt"></h4>
-                <p class="text-gray-300 mb-4" id="who_to_talk_prompt_text"></p>
-                <div class="fillable-line"></div>
-                <div class="fillable-line"></div>
+            <div>
+                <p class="text-xl font-semibold text-gray-800 mb-2 text-left">What specific things do you want to learn more about? <span class="text-base font-normal text-gray-700 block">(e.g., "I need to research more about [Pathway Name] and specific courses/employers.")</span></p>
+                <textarea id="learn_more_about" class="fillable-textarea" placeholder="Write what you need to learn more about..."></textarea>
+                <p class="text-sm text-gray-700 italic mt-2 text-left">
+                    💡 <strong>Thinking Prompt:</strong> What financial, logistical, or long-term questions do you have? Write them down!
+                </p>
             </div>
         </div>
-    </div>
 
-    <script>
-        const translations = {
-            en: {
-                doc_title: "Supporting Your Child's Next Steps: Post-16 Options After Year 11",
-                main_title_part1: "Your Future Unlocked:",
-                main_title_part2: "Navigating Post-16 Pathways",
-                intro_text: "Helping your child decide their path after Year 11 can be a big step. This guide explains the main options and how you can support their choices.",
-                al_title: "A-Levels",
-                al_description: "Traditional academic qualifications, highly valued for university entry.",
-                al_key_info_header: "Key Info & Reality Check:",
-                al_what_label: "What it is:",
-                al_what_text: "A 2-year course studying 3-4 subjects you choose in depth. Focus is on academic theory and knowledge.",
-                al_entry_label: "Entry:",
-                al_entry_text: "Typically 5 or more GCSEs at grades 9-4 (A*-C), often with higher grade requirements (e.g., 6/B) in the chosen subjects.",
-                al_assessment_label: "Assessment:",
-                al_assessment_text: "Mainly by <strong>final exams</strong> at the end of the 2 years, with some subjects having a coursework component.",
-                al_progression_label: "Progression:",
-                al_progression_text: "The primary route to <strong>university</strong>. Also respected for Higher/Degree Apprenticeships and direct employment.",
-                al_stereotype_label: "The Stereotype:",
-                al_stereotype_text: "\"They're the only 'proper' qualification\" / \"They're only for getting into university.\"",
-                al_reality_label: "The Reality:",
-                al_reality_text: "They build deep subject knowledge and strong analytical skills. While they are a key university route, many other pathways also lead to higher education and successful careers.",
-                al_reflection_prompt: "Does my child enjoy academic learning and exploring subjects in detail?",
-                btec_title: "BTECs",
-                btec_description: "Vocational qualifications that are practical, hands-on, and related to specific job sectors.",
-                btec_key_info_header: "Key Info & Reality Check:",
-                btec_what_label: "What it is:",
-                btec_what_text: "Applied, practical learning in a specific sector like Health, Business, or IT, often with real-world case studies.",
-                btec_entry_label: "Entry:",
-                btec_entry_text: "Varies by course and level, but typically 4-5 GCSEs at grades 9-4 (A*-C).",
-                btec_assessment_label: "Assessment:",
-                btec_assessment_text: "Primarily through <strong>coursework</strong>, projects, and practical assignments. Fewer final exams than A-Levels.",
-                btec_progression_label: "Progression:",
-                btec_progression_text: "Excellent route to university (accepted by 95%), apprenticeships, or directly into employment.",
-                btec_stereotype_label: "The Stereotype:",
-                btec_stereotype_text: "\"They're an easier option\" / \"Not as respected as A-Levels.\"",
-                btec_reality_label: "The Reality:",
-                btec_reality_text: "They are rigorous qualifications that develop practical, real-world skills highly valued by both employers and universities.",
-                btec_reflection_prompt: "Does my child thrive with project-based work and prefer fewer exams?",
-                tl_title: "T-Levels",
-                tl_description: "A 2-year technical qualification combining classroom theory with a long industry placement.",
-                tl_key_info_header: "Key Info & Reality Check:",
-                tl_what_label: "What it is:",
-                tl_what_text: "A blend of 80% classroom learning and 20% on-the-job experience, including a 45-day (minimum) industry placement.",
-                tl_entry_label: "Entry:",
-                tl_entry_text: "Varies, but generally requires 5 GCSEs including English and Maths at grade 4 or above.",
-                tl_assessment_label: "Assessment:",
-                tl_assessment_text: "A mix of exams, practical projects, and a review from the placement employer.",
-                tl_progression_label: "Progression:",
-                tl_progression_text: "Leads to skilled employment, Higher Apprenticeships, or university (UCAS points are awarded).",
-                tl_stereotype_label: "The Stereotype:",
-                tl_stereotype_text: "\"They're just for trades\" / \"They're too new and unproven.\"",
-                tl_reality_label: "The Reality:",
-                tl_reality_text: "Equivalent to 3 A-Levels, they provide valuable, real-world experience and are co-designed with leading employers.",
-                tl_reflection_prompt: "Would my child benefit from mixing academic study with significant, real-world work experience?",
-                ib_title: "IB Diploma",
-                ib_description: "A broad, international curriculum with six subjects.",
-                ib_key_info_header: "Key Info & Reality Check:",
-                ib_what_label: "What it is:",
-                ib_what_text: "A comprehensive 2-year programme studying 6 subjects (from languages to sciences), plus a core programme focusing on critical thinking and research.",
-                ib_entry_label: "Entry:",
-                ib_entry_text: "Demanding entry requirements, typically needing at least 5 GCSEs at grade 7-9 (A-A*).",
-                ib_assessment_label: "Assessment:",
-                ib_assessment_text: "A combination of final exams and extensive coursework, including a major independent research project (the Extended Essay).",
-                ib_progression_label: "Progression:",
-                ib_progression_text: "An excellent qualification for applying to top UK and international universities.",
-                ib_stereotype_label: "The Stereotype:",
-                ib_stereotype_text: "\"It's only for geniuses\" / \"The workload is impossible.\"",
-                ib_reality_label: "The Reality:",
-                ib_reality_text: "It is academically challenging but develops exceptional time management, research skills, and a global perspective.",
-                ib_reflection_prompt: "Is my child a strong all-rounder who is self-motivated and enjoys a rigorous academic challenge?",
-                app_title: "Apprenticeships",
-                app_description: "A real job with hands-on experience, a salary, and the chance to train and gain qualifications.",
-                app_key_info_header: "Key Info & Reality Check:",
-                app_what_label: "What it is:",
-                app_what_text: "A full-time job with structured training. At least 20% of the time is spent in 'off-the-job' training with a college or training provider.",
-                app_entry_label: "Entry:",
-                app_entry_text: "Varies hugely by level (Intermediate, Advanced, Higher, Degree). Some have no formal requirements, others require A-Levels or equivalent.",
-                app_assessment_label: "Assessment:",
-                app_assessment_text: "Continuous assessment of on-the-job skills and knowledge-based tests, culminating in an End-Point Assessment (EPA).",
-                app_progression_label: "Progression:",
-                app_progression_text: "A full-time role, promotion, or progression to a higher-level apprenticeship (up to degree and master's level).",
-                app_stereotype_label: "The Stereotype:",
-                app_stereotype_text: "\"They're low-paid and just for manual trades.\"",
-                app_reality_label: "The Reality:",
-                app_reality_text: "Available in over 1,500 job roles, from law to digital marketing. Salaries increase with experience and level.",
-                app_reflection_prompt: "Is my child keen to enter the world of work, earn money, and learn in a practical way?",
-                work_title: "Work with Training",
-                work_description: "Entering the workforce in a role that includes formal, recognised training qualifications.",
-                work_key_info_header: "Key Info & Reality Check:",
-                work_what_label: "What it is:",
-                work_what_text: "An entry-level job that has a structured training component, leading to an accredited qualification relevant to the industry.",
-                work_entry_label: "Entry:",
-                work_entry_text: "Highly dependent on the employer and role. Often, attitude, reliability, and potential are valued over formal qualifications.",
-                work_assessment_label: "Assessment:",
-                work_assessment_text: "Based on performance in the job role and successful completion of the associated training courses and assessments.",
-                work_progression_label: "Progression:",
-                work_progression_text: "Can lead to career advancement within the company, further professional qualifications, or serve as a stepping stone to other roles.",
-                work_stereotype_label: "The Stereotype:",
-                work_stereotype_text: "\"It's just a dead-end job with no real prospects.\"",
-                work_reality_label: "The Reality:",
-                work_reality_text: "Can be an excellent first step on the career ladder, allowing young people to gain vital experience and industry-recognised qualifications.",
-                work_reflection_prompt: "Does my child have a clear career path in mind and want to start immediately?",
-                reflect_header: "Let’s Reflect: Supporting Your Child’s Next Step",
-                learning_style_question: "What's your child's learning style?",
-                learning_style_prompt: "💡 <strong>Thinking Prompt:</strong> How does your child naturally learn best – by doing things, reading, discussing ideas, or watching others? What school subjects or hobbies light up their curiosity?",
-                label_learning_doing_parent: "Practical (doing)",
-                label_learning_writing_parent: "Academic (reading/writing)",
-                label_learning_talking_parent: "Collaborative (talking)",
-                label_learning_watching_parent: "Observational (watching)",
-                label_learning_building_parent: "Hands-on (building)",
-                aspirations_question: "What are your child's aspirations?",
-                aspirations_prompt: "💡 <strong>Thinking Prompt:</strong> Beyond qualifications, what truly motivates your child? What kind of work would make them feel fulfilled, or what sort of impact do they hope to have?",
-                label_goal_university_parent: "Go to university",
-                label_goal_earn_money_parent: "Earn money & learn",
-                label_goal_real_experience_parent: "Gain real-world experience",
-                label_goal_try_different_parent: "Explore different paths",
-                compare_decide_header: "Talk It Through Together",
-                good_fit_question: "Which one(s) feel like a good fit for your child right now?",
-                good_fit_prompt: "💡 <strong>Thinking Prompt:</strong> Which of these pathways genuinely excites your child? Which ones align with their strengths, even if they seem a little challenging?",
-                learn_more_question: "What questions could help us feel more confident in our choices?",
-                talk_through_learn_more_prompt: "💡 <strong>Thinking Prompt:</strong> What specific details about a pathway would make you and your child feel more secure in a decision? For example, about progression, daily life, or support systems?",
-                next_steps_header: "What You Can Do Next",
-                parent_next_step_prompt: "What is one small thing I could do this week to support my child’s journey?",
-                next_step_prompt_text: "💡 <strong>Thinking Prompt:</strong> To get started, what’s one practical, easy step you could take? Maybe help them research a specific college, or arrange a conversation with someone in a career they’re curious about?",
-                parent_questions_prompt: "What questions could help us feel more confident in our choices?",
-                parent_questions_prompt_text: "💡 <strong>Thinking Prompt:</strong> As a parent, what financial, logistical, or long-term questions do you have about these options? How can you find those answers?",
-                parent_who_to_talk_prompt: "Is there someone we can turn to for advice (e.g. careers adviser, tutor, friend)?",
-                who_to_talk_prompt_text: "💡 <strong>Thinking Prompt:</strong> Who in your child's life (or your own network) could offer valuable insights or encouragement? Think about careers advisors, teachers, family friends, or mentors.",
-                other_pathways_title: "Other Pathways & Support",
-                other_pathways_text: "Some students choose pathways not shown on the main grid that can be equally valuable. For example, supported internships and supported apprenticeships offer structured help for young people with Education, Health and Care Plans (EHCPs) or additional needs. These include job coaching and a strong focus on building independence and employability. Some students join the Armed Forces, where training, qualifications and career development are combined with service. Entry-level work or sector-based training programmes may also help young people build skills and move into apprenticeships or further study. Speak to your school, college or local careers service to find out what is available and what would best support your child’s goals."
-            },
-            ar: {
-                doc_title: "دعم خطوات طفلك التالية: خيارات ما بعد المرحلة الثانوية بعد السنة 11",
-                main_title_part1: "مستقبلك بين يديك:",
-                main_title_part2: "استكشاف مسارات ما بعد 16",
-                intro_text: "قد تكون مساعدة طفلك في تحديد مساره بعد السنة 11 خطوة كبيرة. يشرح هذا الدليل الخيارات الرئيسية وكيف يمكنك دعم خياراتهم.",
-                al_title: "المستويات المتقدمة (A-levels)",
-                al_description: "مواد أكاديمية، مثالية للمسارات الجامعية.",
-                al_key_info_header: "معلومات أساسية وحقائق:",
-                al_what_label: "ما هي:",
-                al_what_text: "دراسة أكاديمية معمقة لمدة عامين في 3-4 مواد.",
-                al_entry_label: "شروط القبول:",
-                al_entry_text: "5+ شهادات GCSE بدرجة 4/C (أو أعلى في المواد المختارة).",
-                al_assessment_label: "التقييم:",
-                al_assessment_text: "معظمها <strong>امتحانات نهائية</strong> (بعض الأعمال الدراسية).",
-                al_progression_label: "التقدم:",
-                al_progression_text: "المسار الأساسي إلى <strong>الجامعة</strong>، وكذلك التدريب المهني العالي/الدرجات العلمية.",
-                al_stereotype_label: "الصورة النمطية:",
-                al_stereotype_text: "\"فقط للجامعة\" / \"أكاديمية أكثر من اللازم\".",
-                al_reality_label: "الحقيقة:",
-                al_reality_text: "تطور المهارات التحليلية، وتفتح العديد من الأبواب. ليست المسار الوحيد للجامعة.",
-                al_reflection_prompt: "هل يمكن لطفلي الاستمتاع بدراسة متعمقة لمواضيع محددة؟",
-                btec_title: "شهادات BTEC",
-                btec_description: "عملية وتعتمد على الأعمال الدراسية، وتركز على المهارات المهنية.",
-                btec_key_info_header: "معلومات أساسية وحقائق:",
-                btec_what_label: "ما هي:",
-                btec_what_text: "تعلم تطبيقي في قطاعات محددة (مثل الصحة، الأعمال، تكنولوجيا المعلومات).",
-                btec_entry_label: "شروط القبول:",
-                btec_entry_text: "متفاوتة، عادة 4-5 شهادات GCSE بدرجة 4/C.",
-                btec_assessment_label: "التقييم:",
-                btec_assessment_text: "معظمها <strong>أعمال دراسية</strong>، مشاريع، وتطبيقات عملية.",
-                btec_progression_label: "التقدم:",
-                btec_progression_text: "الجامعة (مقبولة من 95٪)، التدريب المهني، أو العمل.",
-                btec_stereotype_label: "الصورة النمطية:",
-                btec_stereotype_text: "\"أسهل\" / \"ليست بجودة المستويات المتقدمة\".",
-                btec_reality_label: "الحقيقة:",
-                btec_reality_text: "تطور المهارات العملية التي يقدرها أصحاب العمل والجامعات.",
-                btec_reflection_prompt: "هل يفضل طفلي العمل على المشاريع بدلاً من الامتحانات؟",
-                tl_title: "T-Levels",
-                tl_description: "مزيج من التعلم في الفصول الدراسية وتدريب عملي طويل.",
-                tl_key_info_header: "معلومات أساسية وحقائق:",
-                tl_what_label: "ما هي:",
-                tl_what_text: "مزيج من 80% تعلم في الفصل و 20% خبرة عملية، بما في ذلك تدريب عملي لا يقل عن 45 يومًا.",
-                tl_entry_label: "شروط القبول:",
-                tl_entry_text: "تختلف، ولكن بشكل عام تتطلب 5 شهادات GCSE بما في ذلك اللغة الإنجليزية والرياضيات بدرجة 4 أو أعلى.",
-                tl_assessment_label: "التقييم:",
-                tl_assessment_text: "مزيج من الامتحانات والمشاريع العملية ومراجعة من صاحب العمل.",
-                tl_progression_label: "التقدم:",
-                tl_progression_text: "تؤدي إلى وظائف ماهرة، أو تدريب مهني عالٍ، أو جامعة (يتم منح نقاط UCAS).",
-                tl_stereotype_label: "الصورة النمطية:",
-                tl_stereotype_text: "\"إنها فقط للحرف\" / \"إنها جديدة جدًا وغير مثبتة\".",
-                tl_reality_label: "الحقيقة:",
-                tl_reality_text: "تعادل 3 مستويات A-Levels، وتوفر خبرة عملية قيمة، وهي مصممة بالتعاون مع كبار أصحاب العمل.",
-                tl_reflection_prompt: "هل سيستفيد طفلي من مزيج الدراسة الأكاديمية والخبرة العملية الكبيرة؟",
-                ib_title: "دبلوم IB",
-                ib_description: "منهج دولي واسع بست مواد.",
-                ib_key_info_header: "معلومات أساسية وحقائق:",
-                ib_what_label: "ما هي:",
-                ib_what_text: "برنامج شامل لمدة عامين يدرس 6 مواد (من اللغات إلى العلوم)، بالإضافة إلى برنامج أساسي يركز على التفكير النقدي والبحث.",
-                ib_entry_label: "شروط القبول:",
-                ib_entry_text: "متطلبات قبول صارمة، تتطلب عادةً 5 شهادات GCSE على الأقل بدرجة 7-9 (A-A*).",
-                ib_assessment_label: "التقييم:",
-                ib_assessment_text: "مزيج من الامتحانات النهائية والأعمال الدراسية المكثفة، بما في ذلك مشروع بحثي مستقل رئيسي (المقالة الموسعة).",
-                ib_progression_label: "التقدم:",
-                ib_progression_text: "مؤهل ممتاز للتقدم إلى أفضل الجامعات في المملكة المتحدة والعالم.",
-                ib_stereotype_label: "الصورة النمطية:",
-                ib_stereotype_text: "\"إنها فقط للعباقرة\" / \"عبء العمل مستحيل\".",
-                ib_reality_label: "الحقيقة:",
-                ib_reality_text: "إنها صعبة أكاديميًا ولكنها تطور مهارات استثنائية في إدارة الوقت والبحث ومنظورًا عالميًا.",
-                ib_reflection_prompt: "هل طفلي متفوق في كل المواد ومتحمس ذاتيًا ويستمتع بتحدي أكاديمي صارم؟",
-                app_title: "التدريب المهني",
-                app_description: "اكسب أثناء تعلمك في وظيفة حقيقية مع تدريب.",
-                app_key_info_header: "معلومات أساسية وحقائق:",
-                app_what_label: "ما هي:",
-                app_what_text: "وظيفة بدوام كامل مع تدريب منظم. يقضي 20% على الأقل من الوقت في تدريب 'خارج العمل' مع كلية أو مزود تدريب.",
-                app_entry_label: "شروط القبول:",
-                app_entry_text: "تختلف بشكل كبير حسب المستوى (متوسط، متقدم، عالٍ، درجة). البعض ليس لديه متطلبات رسمية، والبعض الآخر يتطلب A-Levels أو ما يعادلها.",
-                app_assessment_label: "التقييم:",
-                app_assessment_text: "تقييم مستمر للمهارات أثناء العمل واختبارات معرفية، تتوج بتقييم نقطة النهاية (EPA).",
-                app_progression_label: "التقدم:",
-                app_progression_text: "وظيفة بدوام كامل، أو ترقية، أو التقدم إلى تدريب مهني بمستوى أعلى (حتى مستوى الدرجة والماجستير).",
-                app_stereotype_label: "الصورة النمطية:",
-                app_stereotype_text: "\"إنها منخفضة الأجر وفقط للحرف اليدوية\".",
-                app_reality_label: "الحقيقة:",
-                app_reality_text: "متوفرة في أكثر من 1500 دور وظيفي، من القانون إلى التسويق الرقمي. تزداد الرواتب مع الخبرة والمستوى.",
-                app_reflection_prompt: "هل طفلي حريص على دخول عالم العمل وكسب المال والتعلم بطريقة عملية؟",
-                work_title: "العمل مع التدريب",
-                work_description: "دخول سوق العمل في دور يتضمن مؤهلات تدريبية رسمية ومعترف بها.",
-                work_key_info_header: "معلومات أساسية وحقائق:",
-                work_what_label: "ما هي:",
-                work_what_text: "وظيفة على مستوى المبتدئين تتضمن عنصرًا تدريبيًا منظمًا، مما يؤدي إلى الحصول على مؤهل معتمد ذي صلة بالصناعة.",
-                work_entry_label: "شروط القبول:",
-                work_entry_text: "تعتمد بشكل كبير على صاحب العمل والدور. في كثير من الأحيان، يتم تقييم الموقف والموثوقية والإمكانات على المؤهلات الرسمية.",
-                work_assessment_label: "التقييم:",
-                work_assessment_text: "بناءً على الأداء في الدور الوظيفي والانتهاء بنجاح من الدورات والتقييمات التدريبية المرتبطة به.",
-                work_progression_label: "التقدم:",
-                work_progression_text: "يمكن أن يؤدي إلى التقدم الوظيفي داخل الشركة، أو الحصول على مؤهلات مهنية إضافية، أو أن يكون بمثابة نقطة انطلاق لأدوار أخرى.",
-                work_stereotype_label: "الصورة النمطية:",
-                work_stereotype_text: "\"إنها مجرد وظيفة مسدودة بلا آفاق حقيقية\".",
-                work_reality_label: "الحقيقة:",
-                work_reality_text: "يمكن أن تكون خطوة أولى ممتازة على سلم الحياة المهنية، مما يسمح للشباب باكتساب خبرة حيوية ومؤهلات معترف بها في الصناعة.",
-                work_reflection_prompt: "هل لدى طفلي مسار وظيفي واضح في ذهنه ويريد أن يبدأ على الفور؟",
-                reflect_header: "دعونا نتأمل: دعم الخطوة التالية لطفلك",
-                learning_style_question: "ما هو أسلوب تعلم طفلك؟",
-                learning_style_prompt: "💡 <strong>فكرة للتفكير:</strong> كيف يتعلم طفلك بشكل طبيعي أفضل – من خلال القيام بالأشياء، القراءة، مناقشة الأفكار، أو مشاهدة الآخرين؟ ما هي المواد المدرسية أو الهوايات التي تثير فضولهم؟",
-                label_learning_doing_parent: "عملي (بالفعل)",
-                label_learning_writing_parent: "أكاديمي (بالقراءة/الكتابة)",
-                label_learning_talking_parent: "تعاوني (بالتحدث)",
-                label_learning_watching_parent: "ملاحظة (بالمشاهدة)",
-                label_learning_building_parent: "عملي (بالبناء)",
-                aspirations_question: "ما هي طموحات طفلك؟",
-                aspirations_prompt: "💡 <strong>فكرة للتفكير:</strong> بخلاف المؤهلات، ما الذي يحفز طفلك حقًا؟ ما نوع العمل الذي سيجعلهم يشعرون بالرضا، أو ما نوع التأثير الذي يأملون في إحداثه؟",
-                label_goal_university_parent: "الذهاب إلى الجامعة",
-                label_goal_earn_money_parent: "كسب المال والتعلم",
-                label_goal_real_experience_parent: "اكتساب خبرة في العالم الحقيقي",
-                label_goal_try_different_parent: "استكشاف مسارات مختلفة",
-                compare_decide_header: "تحدثوا عنها معًا",
-                good_fit_question: "أي من هذه الخيارات يبدو مناسبًا لطفلك الآن؟",
-                good_fit_prompt: "💡 <strong>فكرة للتفكير:</strong> أي من هذه المسارات يثير حماس طفلك حقًا؟ أي منها يتوافق مع نقاط قوتهم، حتى لو بدت صعبة بعض الشيء؟",
-                learn_more_question: "ما هي الأسئلة التي يمكن أن تساعدنا على الشعور بثقة أكبر في اختياراتنا؟",
-                talk_through_learn_more_prompt: "💡 <strong>فكرة للتفكير:</strong> ما هي التفاصيل المحددة حول المسار التي ستجعل أنت وطفلك تشعران بأمان أكبر في القرار؟ على سبيل المثال، حول التقدم، الحياة اليومية، أو أنظمة الدعم؟",
-                next_steps_header: "ما يمكنك فعله بعد ذلك",
-                parent_next_step_prompt: "ما هو الشيء الصغير الذي يمكنني فعله هذا الأسبوع لدعم رحلة طفلي؟",
-                next_step_prompt_text: "💡 <strong>فكرة للتفكير:</strong> للبدء، ما هي الخطوة العملية السهلة التي يمكنك اتخاذها؟ ربما مساعدتهم في البحث عن كلية معينة، أو ترتيب محادثة مع شخص في مهنة يثير فضولهم؟",
-                parent_questions_prompt: "ما هي الأسئلة التي يمكن أن تساعدنا على الشعور بثقة أكبر في اختياراتنا؟",
-                parent_questions_prompt_text: "💡 <strong>فكرة للتفكير:</strong> كوالد، ما هي الأسئلة المالية أو اللوجستية أو طويلة الأجل التي لديك حول هذه الخيارات؟ كيف يمكنك العثور على تلك الإجابات؟",
-                parent_who_to_talk_prompt: "هل هناك شخص يمكننا اللجوء إليه للحصول على المشورة (مثل مستشار مهني، مدرس، صديق)؟",
-                who_to_talk_prompt_text: "💡 <strong>فكرة للتفكير:</strong> من في حياة طفلك (أو في شبكتك الخاصة) يمكن أن يقدم رؤى قيمة أو تشجيعًا؟ فكر في مستشاري المهن، والمعلمين، وأصدقاء العائلة، أو المرشدين.",
-                other_pathways_title: "مسارات ودعم آخر",
-                other_pathways_text: "يختار بعض الطلاب مسارات غير معروضة في الشبكة الرئيسية يمكن أن تكون ذات قيمة مماثلة. على سبيل المثال، توفر التدريبات الداخلية المدعومة وبرامج التدريب دعمًا منظمًا للشباب الذين لديهم خطط التعليم والصحة والرعاية (EHC) أو احتياجات إضافية. تتضمن هذه التدريب أثناء العمل وتركيزًا قويًا على بناء الاستقلالية والتوظيف. ينضم بعض الطلاب إلى القوات المسلحة، حيث يتم الجمع بين التدريب والمؤهلات والتطوير الوظيفي والخدمة. يمكن أن يساعد العمل المبتدئ أو برامج التدريب الخاصة بقطاعات معينة الشباب أيضًا على بناء المهارات والانتقال إلى التدريب المهني أو الدراسة الإضافية. تحدث مع مدرستك أو كليتك أو خدمة الوظائف المحلية لمعرفة ما هو متاح وما هو الأفضل لدعم أهداف طفلك."
-            },
-            cy: {
-                doc_title: "Cefnogi Camau Nesaf Eich Plentyn: Opsiynau Ôl-16 ar ôl Blwyddyn 11",
-                main_title_part1: "Datgloi Eich Dyfodol:",
-                main_title_part2: "Llywio Llwybrau Ôl-16",
-                intro_text: "Gall helpu'ch plentyn i benderfynu ar ei lwybr ar ôl Blwyddyn 11 fod yn gam mawr. Mae'r canllaw hwn yn esbonio'r prif opsiynau a sut y gallwch gefnogi ei ddewisiadau.",
-                al_title: "Lefelau Safon Uwch (Lefelau A)",
-                al_description: "Cymwysterau academaidd traddodiadol, sy'n cael eu gwerthfawrogi'n fawr ar gyfer mynediad i'r brifysgol.",
-                al_key_info_header: "Gwybodaeth Allweddol a Gwirioneddau:",
-                al_what_label: "Beth ydyw:",
-                al_what_text: "Cwrs 2 flynedd yn astudio 3-4 pwnc o'ch dewis yn fanwl. Mae'r ffocws ar ddamcaniaeth a gwybodaeth academaidd.",
-                al_entry_label: "Gofynion Mynediad:",
-                al_entry_text: "Fel arfer, 5 TGAU neu fwy ar raddau 9-4 (A*-C), yn aml gyda gofynion gradd uwch (e.e., 6/B) yn y pynciau a ddewiswyd.",
-                al_assessment_label: "Asesu:",
-                al_assessment_text: "Yn bennaf drwy <strong>arholiadau terfynol</strong> ar ddiwedd y 2 flynedd, gyda rhai pynciau'n cynnwys elfen o waith cwrs.",
-                al_progression_label: "Dilyniant:",
-                al_progression_text: "Y prif lwybr i'r <strong>brifysgol</strong>. Hefyd yn cael ei barchu ar gyfer Prentisiaethau Uwch/Gradd a chyflogaeth uniongyrchol.",
-                al_stereotype_label: "Y Stereoteip:",
-                al_stereotype_text: "\"Dyma'r unig gymhwyster 'go iawn'\" / \"Dim ond ar gyfer mynd i'r brifysgol y mae'n dda.\"",
-                al_reality_label: "Y Gwirionedd:",
-                al_reality_text: "Mae'n meithrin sgiliau dadansoddol hanfodol ac yn agor llawer o ddrysau. Nid dyma'r *unig* lwybr i'r brifysgol.",
-                al_reflection_prompt: "A fyddai fy mhlentyn yn mwynhau'r her o astudio pynciau penodol yn fanwl?",
-                btec_title: "BTEC",
-                btec_description: "Cymwysterau galwedigaethol sy'n canolbwyntio ar sgiliau ymarferol a gwaith cwrs.",
-                btec_key_info_header: "Gwybodaeth Allweddol a Gwirioneddau:",
-                btec_what_label: "Beth ydyw:",
-                btec_what_text: "Dysgu cymhwysol wedi'i anelu at sector diwydiant penodol, e.e., Busnes, Iechyd a Gofal Cymdeithasol, neu TG.",
-                btec_entry_label: "Gofynion Mynediad:",
-                btec_entry_text: "Yn amrywio, ond fel arfer mae angen 4-5 TGAU ar raddau 9-4 (A*-C), gan gynnwys Saesneg a Mathemateg yn aml.",
-                btec_assessment_label: "Asesu:",
-                btec_assessment_text: "Yn bennaf drwy <strong>waith cwrs parhaus</strong>, aseiniadau ymarferol, a phrosiectau. Mae gan rai arholiadau allanol.",
-                btec_progression_label: "Dilyniant:",
-                btec_progression_text: "Llwybr rhagorol i'r <strong>brifysgol</strong> (mae dros 95% yn eu derbyn), Prentisiaethau Uwch, neu gyflogaeth uniongyrchol.",
-                btec_stereotype_label: "Y Stereoteip:",
-                btec_stereotype_text: "\"Mae'n opsiwn 'haws'\" / \"Ddim cystal â Lefelau A.\"",
-                btec_reality_label: "Y Gwirionedd:",
-                btec_reality_text: "Cymhwyster a barchir yn fawr sy'n datblygu sgiliau ymarferol y mae cyflogwyr a phrifysgolion yn eu gwerthfawrogi.",
-                btec_reflection_prompt: "A yw'n well gan fy mhlentyn ddysgu drwy wneud a gweithio ar brosiectau yn hytrach nag arholiadau?",
-                tl_title: "Lefelau T",
-                tl_description: "Cymhwyster newydd sy'n cyfuno astudio yn y dosbarth â lleoliad gwaith sylweddol.",
-                tl_key_info_header: "Gwybodaeth Allweddol a Gwirioneddau:",
-                tl_what_label: "Beth ydyw:",
-                tl_what_text: "Cwrs 2 flynedd sy'n cyfateb i 3 Lefel A. Mae tua 80% yn y coleg ac 20% (o leiaf 45 diwrnod) mewn lleoliad diwydiant perthnasol.",
-                tl_entry_label: "Gofynion Mynediad:",
-                tl_entry_text: "Fel arfer 5 TGAU ar raddau 9-4, gan gynnwys Saesneg a Mathemateg yn aml. Gall rhai gofyn am radd uwch mewn pynciau perthnasol.",
-                tl_assessment_label: "Asesu:",
-                tl_assessment_text: "Cymysgedd o arholiadau, gwaith cwrs, a gwerthusiad gan y cyflogwr o'r lleoliad diwydiant.",
-                tl_progression_label: "Dilyniant:",
-                tl_progression_text: "Yn ddelfrydol ar gyfer symud ymlaen i <strong>waith medrus</strong>, Prentisiaeth Uwch/Gradd, neu astudiaethau prifysgol.",
-                tl_stereotype_label: "Y Stereoteip:",
-                tl_stereotype_text: "\"Dim ond ar gyfer prentisiaethau y mae'n dda\" / \"Cymhwyster newydd heb ei brofi.\"",
-                tl_reality_label: "Y Gwirionedd:",
-                tl_reality_text: "Wedi'i ddatblygu gyda chyflogwyr i ddarparu'r sgiliau sydd eu hangen ar ddiwydiant. Mae'n cynnig profiad gwaith go iawn gwerthfawr.",
-                tl_reflection_prompt: "A fyddai'r cyfuniad o ddysgu yn y dosbarth a phrofiad gwaith go iawn yn gweddu i'm plentyn?",
-                ib_title: "Y Fagloriaeth Ryngwladol (IB)",
-                ib_description: "Rhaglen eang, heriol a gydnabyddir yn rhyngwladol.",
-                ib_key_info_header: "Gwybodaeth Allweddol a Gwirioneddau:",
-                ib_what_label: "Beth ydyw:",
-                ib_what_text: "Astudir chwe phwnc (rhai ar lefel uwch, rhai ar lefel safonol) ar draws ystod o ddisgyblaethau, ynghyd â 'rhaglen graidd'.",
-                ib_entry_label: "Gofynion Mynediad:",
-                ib_entry_text: "Fel arfer, gofynion TGAU uchel iawn, yn aml 5 neu fwy o raddau 9-6 (A*-B), gan gynnwys Saesneg a Mathemateg.",
-                ib_assessment_label: "Asesu:",
-                ib_assessment_text: "Cymysgedd o arholiadau terfynol a gwaith cwrs sylweddol, gan gynnwys traethawd estynedig.",
-                ib_progression_label: "Dilyniant:",
-                ib_progression_text: "Llwybr a barchir yn fawr i <strong>brifysgolion gorau'r DU a ledled y byd</strong>.",
-                ib_stereotype_label: "Y Stereoteip:",
-                ib_stereotype_text: "\"Dim ond ar gyfer y rhai mwyaf galluog\" / \"Mae'n ormod o waith.\"",
-                ib_reality_label: "Y Gwirionedd:",
-                ib_reality_text: "Mae'n heriol, ond mae'n datblygu sgiliau rheoli amser, ymchwil annibynnol, ac ehangder gwybodaeth rhagorol.",
-                ib_reflection_prompt: "A yw fy mhlentyn yn unigolyn cyflawn sy'n ffynnu ar her academaidd eang?",
-                app_title: "Prentisiaethau",
-                app_description: "Ennill cyflog, cael profiad gwaith, a chael cymhwyster ar yr un pryd.",
-                app_key_info_header: "Gwybodaeth Allweddol a Gwirioneddau:",
-                app_what_label: "Beth ydyw:",
-                app_what_text: "Swydd go iawn gyda hyfforddiant strwythuredig. Mae o leiaf 20% o'r amser yn cael ei dreulio ar ddysgu y tu allan i'r gweithle, yn aml mewn coleg.",
-                app_entry_label: "Gofynion Mynediad:",
-                app_entry_text: "Yn amrywio'n fawr yn ôl y lefel (Canolradd, Uwch, Uwch, Gradd). Gall rhai fod angen TGAU penodol, tra bod eraill yn canolbwyntio ar botensial.",
-                app_assessment_label: "Asesu:",
-                app_assessment_text: "Asesiad parhaus yn y gweithle, tystiolaeth portffolio, a phrawf ymarferol terfynol (Asesiad Pwynt Terfyn).",
-                app_progression_label: "Dilyniant:",
-                app_progression_text: "Gyrfa amser llawn, dyrchafiad, neu symud ymlaen i <strong>brentisiaeth lefel uwch</strong> (hyd at lefel gradd a Meistr).",
-                app_stereotype_label: "Y Stereoteip:",
-                app_stereotype_text: "\"Cyflog isel\" / \"Dim ond ar gyfer crefftau llaw y mae'n dda.\"",
-                app_reality_label: "Y Gwirionedd:",
-                app_reality_text: "Ar gael mewn dros 1500 o rolau, o'r gyfraith a pheirianneg i farchnata digidol. Mae cyflogau'n cynyddu'n sylweddol gyda phrofiad a lefel.",
-                app_reflection_prompt: "A yw fy mhlentyn yn awyddus i ddechrau gweithio, ennill arian, a dysgu mewn ffordd ymarferol?",
-                work_title: "Gwaith gyda Hyfforddiant",
-                work_description: "Dechrau gyrfa gyda chymwysterau a gydnabyddir gan y diwydiant.",
-                work_key_info_header: "Gwybodaeth Allweddol a Gwirioneddau:",
-                work_what_label: "Beth ydyw:",
-                work_what_text: "Swydd lefel mynediad sy'n cynnwys rhaglen hyfforddi ffurfiol, strwythuredig i ddatblygu sgiliau penodol ar gyfer y swydd.",
-                work_entry_label: "Gofynion Mynediad:",
-                work_entry_text: "Yn dibynnu'n llwyr ar y cyflogwr a'r rôl. Yn aml, mae brwdfrydedd ac agwedd 'gallu gwneud' yr un mor bwysig â chymwysterau.",
-                work_assessment_label: "Asesu:",
-                work_assessment_text: "Yn seiliedig ar berfformiad yn y gweithle, cwblhau'r hyfforddiant, ac o bosibl ennill cymwysterau proffesiynol.",
-                work_progression_label: "Dilyniant:",
-                work_progression_text: "Dilyniant o fewn y cwmni, symud ymlaen i rolau mwy arbenigol, neu ddefnyddio'r profiad i wneud cais am brentisiaeth uwch.",
-                work_stereotype_label: "Y Stereoteip:",
-                work_stereotype_text: "\"Swydd heb ddyfodol\" / \"Dim ond gwaith heb sgiliau ydyw.\"",
-                work_reality_label: "Y Gwirionedd:",
-                work_reality_text: "Gall fod yn gam cyntaf rhagorol ar ysgol gyrfa, gan ddarparu profiad a hyfforddiant gwerthfawr heb y pwysau academaidd.",
-                work_reflection_prompt: "A oes gan fy mhlentyn lwybr gyrfa clir mewn golwg ac a fyddai'n elwa o brofiad uniongyrchol?",
-                reflect_header: "Amser i Fyfyrio: Cefnogi Cam Nesaf Eich Plentyn",
-                learning_style_question: "Beth yw arddull ddysgu eich plentyn?",
-                learning_style_prompt: "💡 <strong>Awydd Myfyrio:</strong> Sut mae'ch plentyn yn dysgu orau'n naturiol - drwy wneud pethau, darllen, trafod syniadau, neu wylio eraill? Pa bynciau ysgol neu hobïau sy'n tanio ei chwilfrydedd?",
-                label_learning_doing_parent: "Ymarferol (gwneud)",
-                label_learning_writing_parent: "Academaidd (darllen/ysgrifennu)",
-                label_learning_talking_parent: "Cydweithredol (siarad)",
-                label_learning_watching_parent: "Arsylwadol (gwylio)",
-                label_learning_building_parent: "Ymarferol (adeiladu)",
-                aspirations_question: "Beth yw dyheadau eich plentyn?",
-                aspirations_prompt: "💡 <strong>Awydd Myfyrio:</strong> Y tu hwnt i gymwysterau, beth sy'n ysgogi eich plentyn go iawn? Pa fath o waith fyddai'n gwneud iddo deimlo'n gyflawn, neu pa fath o effaith y mae'n gobeithio ei chael?",
-                label_goal_university_parent: "Mynd i'r brifysgol",
-                label_goal_earn_money_parent: "Ennill arian a dysgu",
-                label_goal_real_experience_parent: "Cael profiad byd go iawn",
-                label_goal_try_different_parent: "Archwilio llwybrau gwahanol",
-                compare_decide_header: "Siaradwch drwyddo Gyda'n Gilydd",
-                good_fit_question: "Pa un(au) sy'n teimlo'n ffit da i'ch plentyn ar hyn o bryd?",
-                good_fit_prompt: "💡 <strong>Awydd Myfyrio:</strong> Pa un o'r llwybrau hyn sy'n cyffroi eich plentyn yn wirioneddol? Pa rai sy'n cyd-fynd â'i gryfderau, hyd yn oed os ydynt yn ymddangos ychydig yn heriol?",
-                learn_more_question: "Pa gwestiynau allai ein helpu i deimlo'n fwy hyderus yn ein dewisiadau?",
-                talk_through_learn_more_prompt: "💡 <strong>Awydd Myfyrio:</strong> Pa fanylion penodol am lwybr fyddai'n gwneud i chi a'ch plentyn deimlo'n fwy diogel mewn penderfyniad? Er enghraifft, am ddilyniant, bywyd o ddydd i ddydd, neu systemau cymorth?",
-                next_steps_header: "Beth Allwch Chi Ei Wneud Nesaf",
-                parent_next_step_prompt: "Beth yw un peth bach y gallwn i ei wneud yr wythnos hon i gefnogi taith fy mhlentyn?",
-                next_step_prompt_text: "💡 <strong>Awydd Myfyrio:</strong> I ddechrau, beth yw un cam ymarferol, hawdd y gallech ei gymryd? Efallai eu helpu i ymchwilio i goleg penodol, neu drefnu sgwrs gyda rhywun mewn gyrfa y mae ganddynt ddiddordeb ynddi?",
-                parent_questions_prompt: "Pa gwestiynau allai ein helpu i deimlo'n fwy hyderus yn ein dewisiadau?",
-                parent_questions_prompt_text: "💡 <strong>Awydd Myfyrio:</strong> Fel rhiant, pa gwestiynau ariannol, logistaidd, neu hirdymor sydd gennych am yr opsiynau hyn? Sut allwch chi ddod o hyd i'r atebion hynny?",
-                parent_who_to_talk_prompt: "A oes rhywun y gallwn droi ato am gyngor (e.e. cynghorydd gyrfaoedd, tiwtor, ffrind)?",
-                who_to_talk_prompt_text: "💡 <strong>Awydd Myfyrio:</strong> Pwy ym mywyd eich plentyn (neu yn eich rhwydwaith eich hun) allai gynnig mewnwelediadau gwerthfawr neu anogaeth? Meddyliwch am gynghorwyr gyrfaoedd, athrawon, ffrindiau teulu, neu fentoriaid.",
-                other_pathways_title: "Llwybrau a Chymorth Eraill",
-                other_pathways_text: "Mae llwybrau gwerthfawr eraill ar gael. Mae <strong>Interniaethau â Chymorth</strong> a <strong>Hyfforddeiaethau</strong> yn darparu cymorth wedi'i deilwra ar gyfer pobl ifanc ag anghenion dysgu ychwanegol neu Gynlluniau Addysg, Iechyd a Gofal (ADG), gan ganolbwyntio ar sgiliau gwaith a byw'n annibynnol. Mae rhai'n ymuno â'r <strong>lluoedd arfog</strong>, sy'n cynnig hyfforddiant, cymwysterau, a gyrfa strwythuredig. Gall rhaglenni hyfforddi sector-benodol neu waith lefel mynediad hefyd fod yn gamau cyntaf rhagorol. Cysylltwch â gwasanaeth gyrfaoedd eich ysgol neu goleg i archwilio'r holl opsiynau sydd ar gael i gefnogi uchelgeisiau eich plentyn."
-            },
-            bn: {
-                doc_title: "আপনার সন্তানের পরবর্তী পদক্ষেপকে সমর্থন করা: ১১ বছর পর পোস্ট-১৬ বিকল্প",
-                main_title_part1: "আপনার ভবিষ্যৎ উন্মোচিত:",
-                main_title_part2: "পোস্ট-১৬ পথচলা",
-                intro_text: "১১ বছর পর আপনার সন্তানকে তাদের পথ নির্ধারণে সাহায্য করা একটি বড় পদক্ষেপ হতে পারে। এই নির্দেশিকাটি প্রধান বিকল্পগুলি ব্যাখ্যা করে এবং আপনি কীভাবে তাদের পছন্দগুলিকে সমর্থন করতে পারেন।",
-                al_title: "এ-লেভেল",
-                al_description: "একাডেমিক বিষয়, বিশ্ববিদ্যালয় রুটের জন্য আদর্শ।",
-                al_key_info_header: "মূল তথ্য ও বাস্তবতা:",
-                al_what_label: "কী:",
-                al_what_text: "৩-৪টি বিষয়ে ২ বছরের গভীর একাডেমিক অধ্যয়ন।",
-                al_entry_label: "প্রবেশ:",
-                al_entry_text: "৫+ GCSEs @ ৪/C (বা নির্বাচিত বিষয়গুলিতে উচ্চতর)।",
-                al_assessment_label: "মূল্যায়ন:",
-                al_assessment_text: "বেশিরভাগই <strong>চূড়ান্ত পরীক্ষা</strong> (কিছু কোর্সওয়ার্ক)।",
-                al_progression_label: "অগ্রগতি:",
-                al_progression_text: "<strong>বিশ্ববিদ্যালয়ে</strong> যাওয়ার প্রাথমিক পথ, এছাড়াও উচ্চতর/ডিগ্রী শিক্ষানবিশ।",
-                al_stereotype_label: "গতানুগতিক ধারণা:",
-                al_stereotype_text: "\"শুধু বিশ্ববিদ্যালয়ের জন্য\" / \"খুব বেশি একাডেমিক\"।",
-                al_reality_label: "বাস্তবতা:",
-                al_reality_text: "বিশ্লেষণাত্মক দক্ষতা বিকাশ করে, অনেক দরজা খুলে দেয়। বিশ্ববিদ্যালয়ের *একমাত্র* পথ নয়।",
-                al_reflection_prompt: "আমার সন্তান কি নির্দিষ্ট বিষয়গুলির গভীর অধ্যয়ন উপভোগ করতে পারে?",
-                btec_title: "BTECs",
-                btec_description: "ব্যবহারিক এবং কোর্সওয়ার্ক-ভিত্তিক, বৃত্তিমূলক দক্ষতার উপর দৃষ্টি নিবদ্ধ করে।",
-                btec_key_info_header: "মূল তথ্য ও বাস্তবতা:",
-                btec_what_label: "কী:",
-                btec_what_text: "নির্দিষ্ট খাতে ফলিত শিক্ষা (যেমন, স্বাস্থ্য, ব্যবসা, আইটি)।",
-                btec_entry_label: "প্রবেশ:",
-                btec_entry_text: "পরিবর্তনশীল, সাধারণত ৪-৫ GCSEs @ ৪/C।",
-                btec_assessment_label: "মূল্যায়ন:",
-                btec_assessment_text: "বেশিরভাগই <strong>কোর্সওয়ার্ক</strong>, প্রকল্প এবং ব্যবহারিক।",
-                btec_progression_label: "অগ্রগতি:",
-                btec_progression_text: "বিশ্ববিদ্যালয় (৯৫% দ্বারা গৃহীত), শিক্ষানবিশ, বা কাজ।",
-                btec_stereotype_label: "গতানুগতিক ধারণা:",
-                btec_stereotype_text: "\"সহজ\" / \"এ-লেভেলের মতো ভালো নয়\"।",
-                btec_reality_label: "বাস্তবতা:",
-                btec_reality_text: "নিয়োগকর্তা এবং বিশ্ববিদ্যালয় দ্বারা মূল্যবান ব্যবহারিক দক্ষতা বিকাশ করে।",
-                btec_reflection_prompt: "আমার সন্তান কি পরীক্ষার চেয়ে প্রকল্পের কাজ বেশি পছন্দ করে?",
-                tl_title: "টি-লেভেল",
-                tl_description: "শ্রেণীকক্ষের শিক্ষা এবং একটি দীর্ঘ শিল্প প্লেসমেন্টের মিশ্রণ।",
-                tl_key_info_header: "মূল তথ্য ও বাস্তবতা:",
-                tl_what_label: "কী:",
-                tl_what_text: "৮০% কলেজ, ২০% (৪৫+ দিন) চাকরির প্লেসমেন্ট।",
-                tl_entry_label: "প্রবেশ:",
-                tl_entry_text: "পরিবর্তনশীল, প্রায়শই ইংরেজী/গণিত GCSEs ৪-এ প্রয়োজন হয়।",
-                tl_assessment_label: "মূল্যায়ন:",
-                tl_assessment_text: "পরীক্ষা, প্রকল্প এবং নিয়োগকর্তার পর্যালোচনা।",
-                tl_progression_label: "অগ্রগতি:",
-                tl_progression_text: "দক্ষ কাজ, উচ্চতর শিক্ষানবিশ, বা বিশ্ববিদ্যালয়।",
-                tl_stereotype_label: "গতানুগতিক ধারণা:",
-                tl_stereotype_text: "\"শুধু কাজের জন্য\" / \"অপ্রমাণিত\"।",
-                tl_reality_label: "বাস্তবতা:",
-                tl_reality_text: "৩টি এ-লেভেলের সমতুল্য, বাস্তব কাজের অভিজ্ঞতা দেয়।",
-                tl_reflection_prompt: "শ্রেণীকক্ষ এবং বাস্তব কাজের মিশ্রণ কি আমার সন্তানের জন্য উপযুক্ত হবে?",
-                ib_title: "আইবি ডিপ্লোমা",
-                ib_description: "ছয়টি বিষয় সহ একটি বিস্তৃত, আন্তর্জাতিক পাঠ্যক্রম।",
-                ib_key_info_header: "মূল তথ্য ও বাস্তবতা:",
-                ib_what_label: "কী:",
-                ib_what_text: "বিভিন্ন ক্ষেত্রে ৬টি বিষয়, সাথে একটি মূল প্রোগ্রাম।",
-                ib_entry_label: "প্রবেশ:",
-                ib_entry_text: "উচ্চ প্রয়োজনীয়তা, প্রায়শই ৫+ GCSEs ৬/B বা তার উপরে।",
-                ib_assessment_label: "মূল্যায়ন:",
-                ib_assessment_text: "পরীক্ষা এবং ব্যাপক কোর্সওয়ার্ক।",
-                ib_progression_label: "অগ্রগতি:",
-                ib_progression_text: "শীর্ষস্থানীয় যুক্তরাজ্য এবং আন্তর্জাতিক বিশ্ববিদ্যালয়গুলির জন্য চমৎকার।",
-                ib_stereotype_label: "গতানুগতিক ধারণা:",
-                ib_stereotype_text: "\"শুধু প্রতিভাবানদের জন্য\" / \"অনেক বেশি কাজ\"।",
-                ib_reality_label: "বাস্তবতা:",
-                ib_reality_text: "চ্যালেঞ্জিং কিন্তু চমৎকার সময় ব্যবস্থাপনা এবং জ্ঞানের পরিধি বিকাশ করে।",
-                ib_reflection_prompt: "আমার সন্তান কি একজন অলরাউন্ডার যে চ্যালেঞ্জ উপভোগ করে?",
-                app_title: "শিক্ষানবিশ",
-                app_description: "প্রশিক্ষণ সহ একটি বাস্তব চাকরিতে শেখার সময় উপার্জন করুন।",
-                app_key_info_header: "মূল তথ্য ও বাস্তবতা:",
-                app_what_label: "কী:",
-                app_what_text: "একটি বাস্তব চাকরি যেখানে কাঠামোগত প্রশিক্ষণ রয়েছে (২০% চাকরির বাইরে)।",
-                app_entry_label: "প্রবেশ:",
-                app_entry_text: "স্তর অনুসারে পরিবর্তিত হয়; কিছুর কোনো আনুষ্ঠানিক প্রয়োজনীয়তা নেই।",
-                app_assessment_label: "মূল্যায়ন:",
-                app_assessment_text: "ব্যবহারিক কাজ এবং জ্ঞান পরীক্ষা।",
-                app_progression_label: "অগ্রগতি:",
-                app_progression_text: "পূর্ণকালীন চাকরি, উচ্চ স্তরের শিক্ষানবিশ (ডিগ্রী স্তর পর্যন্ত)।",
-                app_stereotype_label: "গতানুগতিক ধারণা:",
-                app_stereotype_text: "\"কম বেতন\" / \"শুধু কায়িক কাজের জন্য\"।",
-                app_reality_label: "বাস্তবতা:",
-                app_reality_text: "আইন থেকে ডিজিটাল মার্কেটিং পর্যন্ত ১৫০০+ চাকরির ভূমিকায় উপলব্ধ। অভিজ্ঞতার সাথে বেতন বৃদ্ধি পায়।",
-                app_reflection_prompt: "আমার সন্তান কি কাজ শুরু করতে এবং উপার্জন করতে আগ্রহী?",
-                work_title: "প্রশিক্ষণ সহ কাজ",
-                work_description: "স্বীকৃত প্রশিক্ষণ নিয়ে কর্মক্ষেত্রে প্রবেশ করা।",
-                work_key_info_header: "মূল তথ্য ও বাস্তবতা:",
-                work_what_label: "কী:",
-                work_what_text: "একটি চাকরি যেখানে আনুষ্ঠানিক, স্বীকৃত প্রশিক্ষণ কোর্স অন্তর্ভুক্ত রয়েছে।",
-                work_entry_label: "প্রবেশ:",
-                work_entry_text: "চাকরির উপর নির্ভর করে, প্রায়শই মনোভাব এবং সম্ভাবনার উপর দৃষ্টি নিবদ্ধ করে।",
-                work_assessment_label: "মূল্যায়ন:",
-                work_assessment_text: "চাকরির কর্মক্ষমতা এবং কোর্স সমাপ্তি।",
-                work_progression_label: "অগ্রগতি:",
-                work_progression_text: "কর্মজীবনে অগ্রগতি, আরও পেশাদার যোগ্যতা।",
-                work_stereotype_label: "গতানুগতিক ধারণা:",
-                work_stereotype_text: "\"শেষ প্রান্তের চাকরি\" / \"কোনো যোগ্যতা নেই\"।",
-                work_reality_label: "বাস্তবতা:",
-                work_reality_text: "একটি কর্মজীবনের জন্য একটি দ্রুত পথ হতে পারে, একই সাথে অভিজ্ঞতা এবং যোগ্যতা অর্জন করে।",
-                work_reflection_prompt: "আমার সন্তানের কি একটি স্পষ্ট কর্মজীবনের পথ মাথায় আছে?",
-                reflect_header: "চলুন ভাবি: আপনার সন্তানের পরবর্তী পদক্ষেপকে সমর্থন করা",
-                learning_style_question: "আপনার সন্তানের শেখার ধরণ কী?",
-                learning_style_prompt: "💡 <strong>চিন্তার খোরাক:</strong> আপনার সন্তান স্বাভাবিকভাবে কীভাবে সবচেয়ে ভালো শেখে - কিছু করে, পড়ে, ধারণা নিয়ে আলোচনা করে, নাকি অন্যদের দেখে? কোন স্কুলের বিষয় বা শখ তাদের কৌতূহল জাগিয়ে তোলে?",
-                label_learning_doing_parent: "ব্যবহারিক (করার মাধ্যমে)",
-                label_learning_writing_parent: "একাডেমিক (পড়া/লেখার মাধ্যমে)",
-                label_learning_talking_parent: "সহযোগিতামূলক (কথা বলার মাধ্যমে)",
-                label_learning_watching_parent: "পর্যবেক্ষণমূলক (দেখার মাধ্যমে)",
-                label_learning_building_parent: "হাতে-কলমে (নির্মাণের মাধ্যমে)",
-                aspirations_question: "আপনার সন্তানের আকাঙ্ক্ষা কী?",
-                aspirations_prompt: "💡 <strong>চিন্তার খোরাক:</strong> যোগ্যতার বাইরে, আপনার সন্তানকে সত্যি কী অনুপ্রাণিত করে? কোন ধরনের কাজ তাদের পরিপূর্ণতা দেবে, বা তারা কী ধরনের প্রভাব ফেলবে বলে আশা করে?",
-                label_goal_university_parent: "বিশ্ববিদ্যালয়ে যাওয়া",
-                label_goal_earn_money_parent: "উপার্জন করা ও শেখা",
-                label_goal_real_experience_parent: "বাস্তব অভিজ্ঞতা অর্জন করা",
-                label_goal_try_different_parent: "বিভিন্ন পথ অন্বেষণ করা",
-                compare_decide_header: "একসাথে কথা বলুন",
-                good_fit_question: "এই মুহূর্তে আপনার সন্তানের জন্য কোনটি উপযুক্ত বলে মনে হচ্ছে?",
-                good_fit_prompt: "💡 <strong>চিন্তার খোরাক:</strong> এই পথগুলির মধ্যে কোনটি আপনার সন্তানকে সত্যিই উৎসাহিত করে? কোনটি তাদের শক্তির সাথে মিলে যায়, যদিও সেগুলি কিছুটা চ্যালেঞ্জিং মনে হতে পারে?",
-                learn_more_question: "কোন প্রশ্নগুলি আমাদের পছন্দগুলিতে আরও আত্মবিশ্বাসী হতে সাহায্য করতে পারে?",
-                talk_through_learn_more_prompt: "💡 <strong>চিন্তার খোরাক:</strong> একটি পথ সম্পর্কে কোন নির্দিষ্ট বিবরণ আপনাকে এবং আপনার সন্তানকে একটি সিদ্ধান্তে আরও নিরাপদ বোধ করাবে? উদাহরণস্বরূপ, অগ্রগতি, দৈনন্দিন জীবন, বা সহায়তা ব্যবস্থা সম্পর্কে?",
-                next_steps_header: "আপনি পরবর্তীতে কী করতে পারেন",
-                parent_next_step_prompt: "এই সপ্তাহে আমার সন্তানের যাত্রাকে সমর্থন করার জন্য আমি একটি ছোট কী করতে পারি?",
-                next_step_prompt_text: "💡 <strong>চিন্তার খোরাক:</strong> শুরু করার জন্য, আপনি একটি বাস্তবসম্মত, সহজ পদক্ষেপ কী নিতে পারেন? হয়তো তাদের একটি নির্দিষ্ট কলেজ গবেষণা করতে সাহায্য করা, অথবা তাদের আগ্রহী একটি পেশার কারো সাথে কথা বলার ব্যবস্থা করা?",
-                parent_questions_prompt: "কোন প্রশ্নগুলি আমাদের পছন্দগুলিতে আরও আত্মবিশ্বাসী হতে সাহায্য করতে পারে?",
-                parent_questions_prompt_text: "💡 <strong>চিন্তার খোরাক:</strong> একজন অভিভাবক হিসাবে, এই বিকল্পগুলি সম্পর্কে আপনার কী আর্থিক, লজিস্টিক বা দীর্ঘমেয়াদী প্রশ্ন আছে? আপনি কীভাবে সেই উত্তরগুলি খুঁজে পেতে পারেন?",
-                parent_who_to_talk_prompt: "পরামর্শের জন্য আমরা কার কাছে যেতে পারি (যেমন ক্যারিয়ার উপদেষ্টা, শিক্ষক, বন্ধু)?",
-                who_to_talk_prompt_text: "💡 <strong>চিন্তার খোরাক:</strong> আপনার সন্তানের জীবনে (বা আপনার নিজের নেটওয়ার্কে) কে মূল্যবান অন্তর্দৃষ্টি বা উৎসাহ দিতে পারে? ক্যারিয়ার উপদেষ্টা, শিক্ষক, পরিবারের বন্ধু বা পরামর্শদাতাদের কথা ভাবুন।",
-                other_pathways_title: "অন্যান্য পথ এবং সমর্থন",
-                other_pathways_text: "কিছু ছাত্রছাত্রী প্রধান গ্রিডে দেখানো হয়নি এমন পথ বেছে নেয় যা সমানভাবে মূল্যবান হতে পারে। উদাহরণস্বরূপ, সমর্থিত ইন্টার্নশিপ এবং প্রশিক্ষণার্থীদের জন্য শিক্ষা, স্বাস্থ্য ও যত্ন (EHC) পরিকল্পনা বা অতিরিক্ত চাহিদা সম্পন্ন তরুণদের জন্য কাঠামোগত সহায়তা প্রদান করে। এর মধ্যে চাকরির প্রশিক্ষণ এবং স্বাধীনতা ও কর্মসংস্থান যোগ্যতা তৈরিতে শক্তিশালী মনোযোগ অন্তর্ভুক্ত। কিছু ছাত্রছাত্রী সশস্ত্র বাহিনীতে যোগ দেয়, যেখানে প্রশিক্ষণ, যোগ্যতা এবং কর্মজীবনের উন্নয়ন পরিষেবার সাথে মিলিত হয়। প্রাথমিক স্তরের কাজ বা খাত-নির্দিষ্ট প্রশিক্ষণ কর্মসূচি তরুণদের দক্ষতা তৈরি করতে এবং শিক্ষানবিশ বা আরও পড়াশোনায় যেতে সাহায্য করতে পারে। আপনার স্কুল, কলেজ বা স্থানীয় ক্যারিয়ার পরিষেবার সাথে কথা বলুন কী পাওয়া যায় এবং আপনার সন্তানের লক্ষ্যগুলিকে সবচেয়ে ভালভাবে সমর্থন করবে তা খুঁজে বের করতে।"
-            },
-            zh: {
-                doc_title: "支持您孩子的下一步：11年级后的16岁以上选择",
-                main_title_part1: "解锁您的未来：",
-                main_title_part2: "探索16岁以上的途径",
-                intro_text: "帮助您的孩子在11年级后决定他们的道路可能是一个重要的步骤。本指南解释了主要选项以及您如何支持他们的选择。",
-                al_title: "A-levels (高中课程)",
-                al_description: "学术科目，是大学途径的理想选择。",
-                al_key_info_header: "关键信息与现实：",
-                al_what_label: "内容：",
-                al_what_text: "为期2年的学术深入研究3-4个科目。",
-                al_entry_label: "入学要求：",
-                al_entry_text: "5个或以上GCSEs成绩达到4/C级（或在所选科目中获得更高成绩）。",
-                al_assessment_label: "评估：",
-                al_assessment_text: "主要是<strong>期末考试</strong>（部分为课程作业）。",
-                al_progression_label: "升学途径：",
-                al_progression_text: "通往<strong>大学</strong>的主要途径，也包括高等/学位学徒制。",
-                al_stereotype_label: "刻板印象：",
-                al_stereotype_text: "\"只为上大学\" / \"太学术化\"。",
-                al_reality_label: "现实：",
-                al_reality_text: "培养分析能力，开启许多大门。不是*唯一*的大学途径。",
-                al_reflection_prompt: "我的孩子会喜欢深入研究特定科目吗？",
-                btec_title: "BTECs (职业技术教育证书)",
-                btec_description: "实用且以课程作业为基础，侧重于职业技能。",
-                btec_key_info_header: "关键信息与现实：",
-                btec_what_label: "内容：",
-                btec_what_text: "特定领域的应用学习（例如，健康、商业、IT）。",
-                btec_entry_label: "入学要求：",
-                btec_entry_text: "各不相同，通常需要4-5个GCSEs成绩达到4/C级。",
-                btec_assessment_label: "评估：",
-                btec_assessment_text: "主要是<strong>课程作业</strong>、项目和实践。",
-                btec_progression_label: "升学途径：",
-                btec_progression_text: "大学（95%接受）、学徒制或工作。",
-                btec_stereotype_label: "刻板印象：",
-                btec_stereotype_text: "\"更容易\" / \"不如A-levels好\"。",
-                btec_reality_label: "现实：",
-                btec_reality_text: "培养雇主和大学看重的实用技能。",
-                btec_reflection_prompt: "我的孩子更喜欢项目作业而不是考试吗？",
-                tl_title: "T-Levels (T级课程)",
-                tl_description: "课堂学习与长期行业实习的结合。",
-                tl_key_info_header: "关键信息与现实：",
-                tl_what_label: "内容：",
-                tl_what_text: "80%在学院学习，20%（45天以上）在职实习。",
-                tl_entry_label: "入学要求：",
-                tl_entry_text: "各不相同，通常要求英语/数学GCSEs成绩达到4级。",
-                tl_assessment_label: "评估：",
-                tl_assessment_text: "考试、项目和雇主评审。",
-                tl_progression_label: "升学途径：",
-                tl_progression_text: "技术工作、高等学徒制或大学。",
-                tl_stereotype_label: "刻板印象：",
-                tl_stereotype_text: "\"只为工作\" / \"未经证实\"。",
-                tl_reality_label: "现实：",
-                tl_reality_text: "相当于3个A-levels，提供真实的工作经验。",
-                tl_reflection_prompt: "课堂和实际工作的结合是否适合我的孩子？",
-                ib_title: "IB Diploma (国际文凭)",
-                ib_description: "包含六个科目的广泛国际课程。",
-                ib_key_info_header: "关键信息与现实：",
-                ib_what_label: "内容：",
-                ib_what_text: "跨越不同领域的6个科目，外加一个核心项目。",
-                ib_entry_label: "入学要求：",
-                ib_entry_text: "要求高，通常需要5个以上GCSEs成绩达到6/B级或以上。",
-                ib_assessment_label: "评估：",
-                ib_assessment_text: "考试和大量的课程作业。",
-                ib_progression_label: "升学途径：",
-                ib_progression_text: "顶尖英国和国际大学的绝佳选择。",
-                ib_stereotype_label: "刻板印象：",
-                ib_stereotype_text: "\"只为天才\" / \"工作量太大\"。",
-                ib_reality_label: "现实：",
-                ib_reality_text: "具有挑战性，但能培养出色的时间管理能力和广博的知识。",
-                ib_reflection_prompt: "我的孩子是喜欢挑战的全能型人才吗？",
-                app_title: "Apprenticeships (学徒制)",
-                app_description: "在实际工作中边学边赚，并接受培训。",
-                app_key_info_header: "关键信息与现实：",
-                app_what_label: "内容：",
-                app_what_text: "一份有结构化培训的真实工作（20%脱产培训）。",
-                app_entry_label: "入学要求：",
-                app_entry_text: "因级别而异；有些没有正式要求。",
-                app_assessment_label: "评估：",
-                app_assessment_text: "实践任务和知识测试。",
-                app_progression_label: "升学途径：",
-                app_progression_text: "全职工作，更高级别的学徒制（可达学位级别）。",
-                app_stereotype_label: "刻板印象：",
-                app_stereotype_text: "\"薪水低\" / \"只适合体力劳动行业\"。",
-                app_reality_label: "现实：",
-                app_reality_text: "涵盖1500多个工作岗位，从法律到数字营销。薪水随经验增长。",
-                app_reflection_prompt: "我的孩子渴望开始工作和赚钱吗？",
-                work_title: "Work with Training (带薪培训)",
-                work_description: "带着公认的培训进入职场。",
-                work_key_info_header: "关键信息与现实：",
-                work_what_label: "内容：",
-                work_what_text: "一份包含正式、经认可的培训课程的工作。",
-                work_entry_label: "入学要求：",
-                work_entry_text: "取决于工作，通常侧重于态度和潜力。",
-                work_assessment_label: "评估：",
-                work_assessment_text: "在职表现和课程完成情况。",
-                work_progression_label: "升学途径：",
-                work_progression_text: "职业发展，进一步的专业资格。",
-                work_stereotype_label: "刻板印象：",
-                work_stereotype_text: "\"没有前途的工作\" / \"没有资格证书\"。",
-                work_reality_label: "现实：",
-                work_reality_text: "可以作为职业生涯的快车道，同时获得经验和资格。",
-                work_reflection_prompt: "我的孩子心中有明确的职业规划吗？",
-                reflect_header: "让我们反思：支持您孩子的下一步",
-                learning_style_question: "您孩子的学习方式是什么？",
-                learning_style_prompt: "💡 <strong>思考提示：</strong> 您的孩子天生如何学得最好——通过做事、阅读、讨论想法，还是观察他人？哪些学校科目或爱好能点燃他们的好奇心？",
-                label_learning_doing_parent: "实践型（动手做）",
-                label_learning_writing_parent: "学术型（阅读/写作）",
-                label_learning_talking_parent: "合作型（交谈）",
-                label_learning_watching_parent: "观察型（观看）",
-                label_learning_building_parent: "动手型（建造）",
-                aspirations_question: "您孩子的志向是什么？",
-                aspirations_prompt: "💡 <strong>思考提示：</strong> 除了学历，真正激励您孩子的是什么？什么样的工作会让他们感到满足，或者他们希望产生什么样的影响？",
-                label_goal_university_parent: "上大学",
-                label_goal_earn_money_parent: "边赚钱边学习",
-                label_goal_real_experience_parent: "获得真实世界经验",
-                label_goal_try_different_parent: "探索不同途径",
-                compare_decide_header: "一起讨论",
-                good_fit_question: "您认为哪一个（或哪些）现在最适合您的孩子？",
-                good_fit_prompt: "💡 <strong>思考提示：</strong> 这些途径中哪一个真正让您的孩子感到兴奋？哪一个与他们的优势相符，即使它们看起来有些挑战？",
-                learn_more_question: "哪些问题可以帮助我们对我们的选择更有信心？",
-                talk_through_learn_more_prompt: "💡 <strong>思考提示：</strong> 关于某个途径的哪些具体细节能让您和您的孩子在做决定时感到更安心？例如，关于升学、日常生活或支持系统？",
-                next_steps_header: "下一步您可以做什么",
-                parent_next_step_prompt: "这周我能做的一件小事来支持我孩子的旅程是什么？",
-                next_step_prompt_text: "💡 <strong>思考提示：</strong> 要开始，您可以采取哪一个实用、简单的步骤？也许帮助他们研究一个特定的学院，或者安排与他们好奇的职业中的某人进行对话？",
-                parent_questions_prompt: "哪些问题可以帮助我们对我们的选择更有信心？",
-                parent_questions_prompt_text: "💡 <strong>思考提示：</strong> 作为家长，您对这些选项有哪些财务、后勤或长期问题？您如何找到这些答案？",
-                parent_who_to_talk_prompt: "我们能向谁寻求建议（例如职业顾问、导师、朋友）？",
-                who_to_talk_prompt_text: "💡 <strong>思考提示：</strong> 在您孩子的生活中（或您自己的关系网中），谁能提供宝贵的见解或鼓励？考虑职业顾问、老师、家庭朋友或导师。",
-                other_pathways_title: "其他途径与支持",
-                other_pathways_text: "有些学生选择的路径未在主网格中显示，但可能同样有价值。例如，支持性实习和培训生计划为有教育、健康和护理（EHC）计划或有额外需求的年轻人提供结构化支持。这些计划包括在职培训，并重点关注培养独立性和就业能力。有些学生加入武装部队，将培训、资格和职业发展与服役相结合。入门级工作或特定行业的培训计划也可以帮助年轻人培养技能，并进入学徒制或继续深造。请与您的学校、学院或当地的职业服务机构交谈，了解有哪些可用的资源以及什么最能支持您孩子的目标。"
-            },
-            uk: {
-                doc_title: "Підтримка наступних кроків вашої дитини: варіанти після 11 класу для 16-річних",
-                main_title_part1: "Ваше майбутнє розблоковано:",
-                main_title_part2: "Навігація шляхами після 16 років",
-                intro_text: "Допомога дитині у виборі шляху після 11 класу може бути великим кроком. Цей посібник пояснює основні варіанти та як ви можете підтримати їхній вибір.",
-                al_title: "A-levels (просунутий рівень)",
-                al_description: "Академічні предмети, ідеальні для вступу до університету.",
-                al_key_info_header: "Ключова інформація та реалії:",
-                al_what_label: "Що це:",
-                al_what_text: "2-річне академічне поглиблене вивчення 3-4 предметів.",
-                al_entry_label: "Вимоги:",
-                al_entry_text: "5+ іспитів GCSE на рівні 4/C (або вище з обраних предметів).",
-                al_assessment_label: "Оцінювання:",
-                al_assessment_text: "Переважно <strong>фінальні іспити</strong> (деякі курсові роботи).",
-                al_progression_label: "Прогресія:",
-                al_progression_text: "Основний шлях до <strong>університету</strong>, а також вищі/дипломні стажування.",
-                al_stereotype_label: "Стереотип:",
-                al_stereotype_text: "\"Тільки для університету\" / \"занадто академічно\".",
-                al_reality_label: "Реальність:",
-                al_reality_text: "Розвиває аналітичні навички, відкриває багато дверей. Це не *єдиний* шлях до університету.",
-                al_reflection_prompt: "Чи може моїй дитині сподобатися поглиблене вивчення конкретних предметів?",
-                btec_title: "BTECs (професійні кваліфікації)",
-                btec_description: "Практичні та курсові роботи, орієнтовані на професійні навички.",
-                btec_key_info_header: "Ключова інформація та реалії:",
-                btec_what_label: "Що це:",
-                btec_what_text: "Прикладне навчання в конкретних секторах (напр., охорона здоров'я, бізнес, ІТ).",
-                btec_entry_label: "Вимоги:",
-                btec_entry_text: "Різні, зазвичай 4-5 іспитів GCSE на рівні 4/C.",
-                btec_assessment_label: "Оцінювання:",
-                btec_assessment_text: "Переважно <strong>курсові роботи</strong>, проекти та практичні завдання.",
-                btec_progression_label: "Прогресія:",
-                btec_progression_text: "Університет (приймають 95%), стажування або робота.",
-                btec_stereotype_label: "Стереотип:",
-                btec_stereotype_text: "\"Легше\" / \"не так добре, як A-levels\".",
-                btec_reality_label: "Реальність:",
-                btec_reality_text: "Розвиває практичні навички, які цінують роботодавці та університети.",
-                btec_reflection_prompt: "Моя дитина віддає перевагу проектній роботі над іспитами?",
-                tl_title: "T-Levels (технічні рівні)",
-                tl_description: "Поєднання навчання в класі та тривалого стажування в галузі.",
-                tl_key_info_header: "Ключова інформація та реалії:",
-                tl_what_label: "Що це:",
-                tl_what_text: "80% в коледжі, 20% (45+ днів) стажування на робочому місці.",
-                tl_entry_label: "Вимоги:",
-                tl_entry_text: "Різні, часто вимагають іспити GCSE з англійської/математики на рівні 4.",
-                tl_assessment_label: "Оцінювання:",
-                tl_assessment_text: "Іспити, проекти та відгук роботодавця.",
-                tl_progression_label: "Прогресія:",
-                tl_progression_text: "Кваліфікована робота, вищі стажування або університет.",
-                tl_stereotype_label: "Стереотип:",
-                tl_stereotype_text: "\"Тільки для роботи\" / \"неперевірено\".",
-                tl_reality_label: "Реальність:",
-                tl_reality_text: "Еквівалент 3 A-levels, дає реальний досвід роботи.",
-                tl_reflection_prompt: "Чи підійде моїй дитині поєднання навчання в класі та реальної роботи?",
-                ib_title: "IB Diploma (міжнародний бакалаврат)",
-                ib_description: "Широка міжнародна програма з шістьма предметами.",
-                ib_key_info_header: "Ключова інформація та реалії:",
-                ib_what_label: "Що це:",
-                ib_what_text: "6 предметів з різних галузей, плюс основна програма.",
-                ib_entry_label: "Вимоги:",
-                ib_entry_text: "Високі вимоги, часто 5+ іспитів GCSE на рівні 6/B або вище.",
-                ib_assessment_label: "Оцінювання:",
-                ib_assessment_text: "Іспити та великі курсові роботи.",
-                ib_progression_label: "Прогресія:",
-                ib_progression_text: "Відмінно для провідних британських та міжнародних університетів.",
-                ib_stereotype_label: "Стереотип:",
-                ib_stereotype_text: "\"Тільки для геніїв\" / \"занадто багато роботи\".",
-                ib_reality_label: "Реальність:",
-                ib_reality_text: "Складно, але розвиває відмінні навички тайм-менеджменту та широту знань.",
-                ib_reflection_prompt: "Чи є моя дитина всебічно розвиненою особистістю, яка любить виклики?",
-                app_title: "Apprenticeships (стажування)",
-                app_description: "Заробляйте, навчаючись на реальній роботі з навчанням.",
-                app_key_info_header: "Ключова інформація та реалії:",
-                app_what_label: "Що це:",
-                app_what_text: "Реальна робота зі структурованим навчанням (20% поза робочим місцем).",
-                app_entry_label: "Вимоги:",
-                app_entry_text: "Залежить від рівня; деякі не мають формальних вимог.",
-                app_assessment_label: "Оцінювання:",
-                app_assessment_text: "Практичні завдання та тести знань.",
-                app_progression_label: "Прогресія:",
-                app_progression_text: "Повна зайнятість, стажування вищого рівня (до рівня диплом).",
-                app_stereotype_label: "Стереотип:",
-                app_stereotype_text: "\"Низька зарплата\" / \"тільки для робітничих професій\".",
-                app_reality_label: "Реальність:",
-                app_reality_text: "Доступно в 1500+ професіях, від права до цифрового маркетингу. Зарплата зростає з досвідом.",
-                app_reflection_prompt: "Чи прагне моя дитина почати працювати та заробляти?",
-                work_title: "Робота з навчанням",
-                work_description: "Вступ до робочої сили з визнаним навчанням.",
-                work_key_info_header: "Ключова інформація та реалії:",
-                work_what_label: "Що це:",
-                work_what_text: "Робота, що включає формальні, акредитовані навчальні курси.",
-                work_entry_label: "Вимоги:",
-                work_entry_text: "Залежить від роботи, часто зосереджено на ставленні та потенціалі.",
-                work_assessment_label: "Оцінювання:",
-                work_assessment_text: "Виконання роботи на місці та завершення курсу.",
-                work_progression_label: "Прогресія:",
-                work_progression_text: "Кар'єрне зростання, подальші професійні кваліфікації.",
-                work_stereotype_label: "Стереотип:",
-                work_stereotype_text: "\"Безперспективна робота\" / \"без кваліфікації\".",
-                work_reality_label: "Реальність:",
-                work_reality_text: "Може бути швидким шляхом до кар'єри, одночасно здобуваючи досвід та кваліфікацію.",
-                work_reflection_prompt: "Чи має моя дитина чіткий кар'єрний шлях на увазі?",
-                reflect_header: "Поміркуймо: Підтримка наступного кроку вашої дитини",
-                learning_style_question: "Який стиль навчання у вашої дитини?",
-                learning_style_prompt: "💡 <strong>Підказка для роздумів:</strong> Як ваша дитина найкраще навчається природним шляхом – роблячи щось, читаючи, обговорюючи ідеї чи спостерігаючи за іншими? Які шкільні предмети чи хобі розпалюють її цікавість?",
-                label_learning_doing_parent: "Практичний (роблячи)",
-                label_learning_writing_parent: "Академічний (читаючи/пишучи)",
-                label_learning_talking_parent: "Спільний (розмовляючи)",
-                label_learning_watching_parent: "Спостережливий (спостерігаючи)",
-                label_learning_building_parent: "Практичний (будуючи)",
+        <div class="reflection-section bg-gray-100 p-8 rounded-2xl shadow-inner w-full max-w-5xl border-t-4 border-gray-300">
+            <h3 class="text-3xl font-bold text-gray-900 mb-6 text-left">Your Next Steps</h3>
 
-                aspirations_question: "Які прагнення у вашої дитини?",
-                aspirations_prompt: "💡 <strong>Підказка для роздумів:</strong> Окрім кваліфікацій, що насправді мотивує вашу дитину? Яка робота принесе їй задоволення, або який вплив вона сподівається мати?",
-                label_goal_university_parent: "Вступити до університету",
-                label_goal_earn_money_parent: "Заробляти гроші та навчатися",
-                label_goal_real_experience_parent: "Отримати реальний досвід",
-                label_goal_try_different_parent: "Досліджувати різні шляхи",
+            <div class="mb-6">
+                <p class="text-xl font-semibold text-gray-800 mb-2 text-left">My next step is... <span class="text-base font-normal text-gray-700 block">(e.g., "Talk to my careers advisor about...", "Look up colleges offering...", "Search for apprenticeships in...")</span></p>
+                <textarea id="my_next_step" class="fillable-textarea" placeholder="Write your next step here..."></textarea>
+                <p class="text-sm text-gray-700 italic mt-2 text-left">
+                    💡 <strong>Thinking Prompt:</strong> What's one small, practical thing you can do this week to move forward?
+                </p>
+            </div>
+            <div class="mb-6">
+                <p class="text-xl font-semibold text-gray-800 mb-2 text-left">Questions I want to ask to get more information: <span class="text-base font-normal text-gray-700 block">(e.g., "What are the entry requirements?", "What's the assessment like?", "What jobs can this lead to?")</span></p>
+                <textarea id="questions_to_ask" class="fillable-textarea" placeholder="Write your questions here..."></textarea>
+                <p class="text-sm text-gray-700 italic mt-2 text-left">
+                    💡 <strong>Thinking Prompt:</strong> What financial, logistical, or long-term questions do you have? Write them down!
+                </p>
+            </div>
+            <div>
+                <p class="text-xl font-semibold text-gray-800 mb-2 text-left">Who can I talk to for advice and support? <span class="text-base font-normal text-gray-700 block">(e.g., "Careers advisor, teachers, parents, older students, employers.")</span></p>
+                <textarea id="who_to_talk_to" class="fillable-textarea" placeholder="Write who you can talk to..."></textarea>
+                <p class="text-sm text-gray-700 italic mt-2 text-left">
+                    💡 <strong>Thinking Prompt:</strong> Who in your life (or in your network) could offer valuable insights or encouragement?
+                </p>
+            </div>
 
-                compare_decide_header: "Обговоріть це разом",
-                good_fit_question: "Який(і) варіант(и) здається(ються) гарним вибором для вашої дитини зараз?",
-                good_fit_prompt: "💡 <strong>Підказка для роздумів:</strong> Який з цих шляхів справді захоплює вашу дитину? Які з них відповідають її сильним сторонам, навіть якщо вони здаються трохи складними?",
-                learn_more_question: "Які питання допоможуть нам почуватися впевненіше у своєму виборі?",
-                talk_through_learn_more_prompt: "💡 <strong>Підказка для роздумів:</strong> Які конкретні деталі про шлях змусять вас і вашу дитину почуватися більш впевнено у рішенні? Наприклад, про прогрес, повсякденне життя або системи підтримки?",
-
-                next_steps_header: "Що ви можете зробити далі",
-                parent_next_step_prompt: "Що я можу зробити цього тижня, щоб підтримати шлях моєї дитини?",
-                next_step_prompt_text: "💡 <strong>Підказка для роздумів:</strong> Для початку, який практичний, легкий крок ви могли б зробити? Можливо, допомогти їм дослідити конкретний коледж або домовитися про розмову з кимось у кар'єрі, яка їх цікавить?",
-                parent_questions_prompt: "Які питання допоможуть нам почуватися впевненіше у своєму виборі?",
-                parent_questions_prompt_text: "💡 <strong>Підказка для роздумів:</strong> Як батьки, які фінансові, логістичні чи довгострокові питання у вас є щодо цих варіантів? Як ви можете знайти ці відповіді?",
-                parent_who_to_talk_prompt: "До кого ми можемо звернутися за порадою (наприклад, до кар'єрного консультанта, репетитора, друга)?",
-                who_to_talk_prompt_text: "💡 <strong>Підказка для роздумів:</strong> Хто в житті вашої дитини (або у вашій власній мережі) може запропонувати цінні ідеї чи заохочення? Подумайте про кар'єрних консультантів, вчителів, друзів сім'ї чи наставників.",
-                other_pathways_title: "Інші шляхи та підтримка",
-                other_pathways_text: "Деякі студенти обирають шляхи, не показані в основній сітці, які можуть бути настільки ж цінними. Наприклад, підтримувані стажування та тренінги пропонують структуровану підтримку для молодих людей з планами освіти, охорони здоров'я та догляду (EHC) або додатковими потребами. Вони включають навчання на робочому місці та сильну увагу до формування незалежності та працевлаштування. Деякі студенти вступають до Збройних Сил, де навчання, кваліфікації та кар'єрний розвиток поєднуються зі службою. Початкова робота або галузеві навчальні програми також можуть допомогти молодим людям розвинути навички та перейти до учнівства або подальшого навчання. Поговоріть зі своєю школою, коледжем або місцевою службою кар'єри, щоб дізнатися, що є в наявності та що найкраще підтримає цілі вашої дитини."
-            },
-            ur: {
-                doc_title: "اپنے بچے کے اگلے اقدامات کی حمایت: سال 11 کے بعد 16+ کے اختیارات",
-                main_title_part1: "آپ کا مستقبل کھل گیا:",
-                main_title_part2: "16+ کے راستوں پر تشریف لے جانا",
-                intro_text: "سال 11 کے بعد اپنے بچے کو ان کے راستے کا فیصلہ کرنے میں مدد کرنا ایک بڑا قدم ہوسکتا ہے۔ یہ گائیڈ اہم اختیارات کی وضاحت کرتا ہے اور آپ ان کے انتخاب کی حمایت کیسے کرسکتے ہیں۔",
-                al_title: "اے-لیولز",
-                al_description: "تعلیمی مضامین، یونیورسٹی کے راستوں کے لئے مثالی۔",
-                al_key_info_header: "کلیدی معلومات اور حقائق:",
-                al_what_label: "کیا ہے:",
-                al_what_text: "3-4 مضامین میں 2 سالہ تعلیمی گہرائی سے مطالعہ۔",
-                al_entry_label: "داخلہ:",
-                al_entry_text: "5+ جی سی ایس ایز @ 4/C (یا منتخب مضامین میں اس سے زیادہ)۔",
-                al_assessment_label: "تشخیص:",
-                al_assessment_text: "زیادہ تر <strong>حتمی امتحانات</strong> (کچھ کورس ورک)۔",
-                al_progression_label: "ترقی:",
-                al_progression_text: "<strong>یونیورسٹی</strong> کا بنیادی راستہ، ہائیر/ڈگری اپرنٹس شپس بھی۔",
-                al_stereotype_label: " دقیانوسی تصور:",
-                al_stereotype_text: "\"صرف یونیورسٹی کے لئے\" / \"بہت زیادہ تعلیمی\"۔",
-                al_reality_label: "حقیقت:",
-                al_reality_text: "تجزیاتی مہارتوں کو فروغ دیتا ہے، بہت سے دروازے کھولتا ہے۔ یونیورسٹی کا *واحد* راستہ نہیں۔",
-                al_reflection_prompt: "کیا میرا بچہ مخصوص مضامین کے گہرائی سے مطالعہ سے لطف اندوز ہوسکتا ہے؟",
-                btec_title: "بی ٹی ای سیز",
-                btec_description: "عملی اور کورس ورک پر مبنی، پیشہ ورانہ مہارتوں پر توجہ مرکوز کرنا۔",
-                btec_key_info_header: "کلیدی معلومات اور حقائق:",
-                btec_what_label: "کیا ہے:",
-                btec_what_text: "مخصوص شعبوں (مثلاً صحت، کاروبار، آئی ٹی) میں اطلاقی تعلیم۔",
-                btec_entry_label: "داخلہ:",
-                btec_entry_text: "مختلف، عام طور پر 4-5 جی سی ایس ایز @ 4/C۔",
-                btec_assessment_label: "تشخیص:",
-                btec_assessment_text: "زیادہ تر <strong>کورس ورک</strong>، پروجیکٹس، اور عملی کام۔",
-                btec_progression_label: "ترقی:",
-                btec_progression_text: "یونیورسٹی (95٪ قبول شدہ)، اپرنٹس شپس، یا کام۔",
-                btec_stereotype_label: " دقیانوسی تصور:",
-                btec_stereotype_text: "\"آسان\" / \"اے-لیولز جتنا اچھا نہیں\"۔",
-                btec_reality_label: "حقیقت:",
-                btec_reality_text: "عملی مہارتوں کو فروغ دیتا ہے جن کی آجروں اور یونیورسٹیوں کی طرف سے قدر کی جاتی ہے۔",
-                btec_reflection_prompt: "کیا میرا بچہ امتحانات پر پروجیکٹ کے کام کو ترجیح دیتا ہے؟",
-                tl_title: "ٹی-لیولز",
-                tl_description: "کلاس روم کی تعلیم اور ایک طویل صنعتی پلیسمنٹ کا مرکب۔",
-                tl_key_info_header: "کلیدی معلومات اور حقائق:",
-                tl_what_label: "کیا ہے:",
-                tl_what_text: "80٪ کالج، 20٪ (45+ دن) ملازمت پر پلیسمنٹ۔",
-                tl_entry_label: "داخلہ:",
-                tl_entry_text: "مختلف، اکثر انگریزی/ریاضی جی سی ایس ایز 4 پر درکار ہوتے ہیں۔",
-                tl_assessment_label: "تشخیص:",
-                tl_assessment_text: "امتحانات، پروجیکٹس، اور آجر کا جائزہ۔",
-                tl_progression_label: "ترقی:",
-                tl_progression_text: "ہنرمند کام، ہائیر اپرنٹس شپس، یا یونیورسٹی۔",
-                tl_stereotype_label: " دقیانوسی تصور:",
-                tl_stereotype_text: "\"صرف کام کے لئے\" / \"غیر ثابت شدہ\"۔",
-                tl_reality_label: "حقیقت:",
-                tl_reality_text: "3 اے-لیولز کے برابر، حقیقی کام کا تجربہ دیتا ہے۔",
-                tl_reflection_prompt: "کیا کلاس روم اور حقیقی کام کا امتزاج میرے بچے کے لئے موزوں ہوگا؟",
-                ib_title: "آئی بی ڈپلومہ",
-                ib_description: "چھ مضامین کے ساتھ ایک وسیع، بین الاقوامی نصاب۔",
-                ib_key_info_header: "کلیدی معلومات اور حقائق:",
-                ib_what_label: "کیا ہے:",
-                ib_what_text: "مختلف شعبوں میں 6 مضامین، علاوہ ایک بنیادی پروگرام۔",
-                ib_entry_label: "داخلہ:",
-                ib_entry_text: "اعلی ضروریات، اکثر 5+ جی سی ایس ایز 6/B یا اس سے اوپر۔",
-                ib_assessment_label: "تشخیص:",
-                ib_assessment_text: "امتحانات اور وسیع کورس ورک۔",
-                ib_progression_label: "ترقی:",
-                ib_progression_text: "برطانیہ اور بین الاقوامی یونیورسٹیوں کے لئے بہترین۔",
-                ib_stereotype_label: " دقیانوسی تصور:",
-                ib_stereotype_text: "\"صرف ذہینوں کے لئے\" / \"بہت زیادہ کام\"۔",
-                ib_reality_label: "حقیقت:",
-                ib_reality_text: "چیلنجنگ لیکن بہترین وقت کے انتظام اور علم کی وسعت کو فروغ دیتا ہے۔",
-                ib_reflection_prompt: "کیا میرا بچہ ایک آل راؤنڈر ہے جو چیلنج سے لطف اندوز ہوتا ہے؟",
-                app_title: "اپرنٹس شپس",
-                app_description: "تربیت کے ساتھ حقیقی ملازمت میں سیکھتے ہوئے کمائیں۔",
-                app_key_info_header: "کلیدی معلومات اور حقائق:",
-                app_what_label: "کیا ہے:",
-                app_what_text: "ساختہ تربیت کے ساتھ ایک حقیقی ملازمت (20٪ آف دی جاب)۔",
-                app_entry_label: "داخلہ:",
-                app_entry_text: "سطح کے لحاظ سے مختلف؛ کچھ کی کوئی رسمی ضروریات نہیں ہیں۔",
-                app_assessment_label: "تشخیص:",
-                app_assessment_text: "عملی کام اور علم کے ٹیسٹ۔",
-                app_progression_label: "ترقی:",
-                app_progression_text: "کل وقتی ملازمت، اعلی سطح کی اپرنٹس شپس (ڈگری کی سطح تک)۔",
-                app_stereotype_label: " دقیانوسی تصور:",
-                app_stereotype_text: "\"کم تنخواہ\" / \"صرف دستی تجارت کے لئے\"۔",
-                app_reality_label: "حقیقت:",
-                app_reality_text: "قانون سے لے کر ڈیجیٹل مارکیٹنگ تک 1500+ ملازمت کے کرداروں میں دستیاب ہے۔ تجربے کے ساتھ تنخواہ بڑھتی ہے۔",
-                app_reflection_prompt: "کیا میرا بچہ کام شروع کرنے اور کمانے کے لئے بے تاب ہے؟",
-                work_title: "تربیت کے ساتھ کام کریں",
-                work_description: "تسلیم شدہ تربیت کے ساتھ افرادی قوت میں داخل ہونا۔",
-                work_key_info_header: "کلیدی معلومات اور حقائق:",
-                work_what_label: "کیا ہے:",
-                work_what_text: "ایک ایسی ملازمت جس میں رسمی، تسلیم شدہ تربیتی کورسز شامل ہوں۔",
-                work_entry_label: "داخلہ:",
-                work_entry_text: "ملازمت پر منحصر ہے، اکثر رویہ اور صلاحیت پر توجہ مرکوز کی جاتی ہے۔",
-                work_assessment_label: "تشخیص:",
-                work_assessment_text: "ملازمت پر کارکردگی اور کورس کی تکمیل۔",
-                work_progression_label: "ترقی:",
-                work_progression_text: "کیریئر میں ترقی، مزید پیشہ ورانہ قابلیت۔",
-                work_stereotype_label: " دقیانوسی تصور:",
-                work_stereotype_text: "\"بے کار ملازمت\" / \"کوئی قابلیت نہیں\"۔",
-                work_reality_label: "حقیقت:",
-                work_reality_text: "ایک ہی وقت میں تجربہ اور قابلیت حاصل کرتے ہوئے، کیریئر کا تیز رفتار راستہ ہوسکتا ہے۔",
-                work_reflection_prompt: "کیا میرے بچے کے ذہن میں واضح کیریئر کا راستہ ہے؟",
-                reflect_header: "آئیے غور کریں: اپنے بچے کے اگلے قدم کی حمایت کرنا",
-                learning_style_question: "آپ کے بچے کا سیکھنے کا انداز کیا ہے؟",
-                learning_style_prompt: "💡 <strong>سوچنے کا اشارہ:</strong> آپ کا بچہ قدرتی طور پر کیسے بہتر سیکھتا ہے - کام کرکے، پڑھ کر، خیالات پر تبادلہ خیال کرکے، یا دوسروں کو دیکھ کر؟ کون سے اسکول کے مضامین یا مشاغل ان کی تجسس کو روشن کرتے ہیں؟",
-                label_learning_doing_parent: "عملی (کرنا)",
-                label_learning_writing_parent: "تعلیمی (پڑھنا/لکھنا)",
-                label_learning_talking_parent: "باہمی (بات کرنا)",
-                label_learning_watching_parent: "مشاہداتی (دیکھنا)",
-                label_learning_building_parent: "عملی (تعمیر کرنا)",
-                aspirations_question: "آپ کے بچے کی خواہشات کیا ہیں؟",
-                aspirations_prompt: "💡 <strong>سوچنے کا اشارہ:</strong> قابلیتوں سے ہٹ کر، آپ کے بچے کو واقعی کیا چیز متحرک کرتی ہے؟ کس قسم کا کام انہیں تکمیل کا احساس دلائے گا، یا وہ کس قسم کا اثر ڈالنے کی امید کرتے ہیں؟",
-                label_goal_university_parent: "یونیورسٹی جانا",
-                label_goal_earn_money_parent: "پیسہ کمانا اور سیکھنا",
-                label_goal_real_experience_parent: "حقیقی دنیا کا تجربہ حاصل کرنا",
-                label_goal_try_different_parent: "مختلف راستے تلاش کرنا",
-                compare_decide_header: "مل کر بات کریں",
-                good_fit_question: "کون سا (کون سے) آپ کے بچے کے لئے ابھی مناسب لگتا ہے؟",
-                good_fit_prompt: "💡 <strong>سوچنے کا اشارہ:</strong> ان راستوں میں سے کون سا آپ کے بچے کو واقعی پرجوش کرتا ہے؟ کون سے ان کی طاقتوں کے مطابق ہیں، چاہے وہ تھوڑا مشکل لگیں؟",
-                learn_more_question: "کون سے سوالات ہمارے انتخاب میں ہمیں زیادہ پر اعتماد محسوس کرنے میں مدد کرسکتے ہیں؟",
-                talk_through_learn_more_prompt: "💡 <strong>سوچنے کا اشارہ:</strong> کسی راستے کے بارے میں کون سی مخصوص تفصیلات آپ اور آپ کے بچے کو فیصلے میں زیادہ محفوظ محسوس کرائیں گی؟ مثال کے طور پر، ترقی، روزمرہ کی زندگی، یا معاون نظام کے بارے میں؟",
-                next_steps_header: "آپ آگے کیا کرسکتے ہیں",
-                parent_next_step_prompt: "اس ہفتے میں اپنے بچے کے سفر کی حمایت کے لئے کیا چھوٹا کام کرسکتا ہوں؟",
-                next_step_prompt_text: "💡 <strong>سوچنے کا اشارہ:</strong> شروع کرنے کے لئے، آپ کونسا ایک عملی، آسان قدم اٹھا سکتے ہیں؟ شاید انہیں کسی مخصوص کالج کی تحقیق میں مدد دینا، یا کسی ایسے شخص کے ساتھ بات چیت کا اہتمام کرنا جس کے کیریئر میں انہیں دلچسپی ہو؟",
-                parent_questions_prompt: "کون سے سوالات ہمارے انتخاب میں ہمیں زیادہ پر اعتماد محسوس کرنے میں مدد کرسکتے ہیں؟",
-                parent_questions_prompt_text: "💡 <strong>سوچنے کا اشارہ:</strong> ایک والدین کے طور پر، ان اختیارات کے بارے میں آپ کے کیا مالی، لاجسٹک، یا طویل مدتی سوالات ہیں? آپ ان جوابات کو کیسے تلاش کرسکتے ہیں?",
-                parent_who_to_talk_prompt: "کیا کوئی ہے جس سے ہم مشورے کے لئے رجوع کرسکتے ہیں (مثلاً کیریئر ایڈوائزر، ٹیوٹر، دوست)؟",
-                who_to_talk_prompt_text: "💡 <strong>سوچنے کا اشارہ:</strong> آپ کے بچے کی زندگی میں (یا آپ کے اپنے نیٹ ورک میں) کون قیمتی بصیرت یا حوصلہ افزائی پیش کرسکتا ہے؟ کیریئر ایڈوائزرز، اساتذہ، خاندانی دوست، یا سرپرستوں کے بارے میں سوچیں۔",
-                other_pathways_title: "دیگر راستے اور معاونت",
-                other_pathways_text: "کچھ طلباء ایسے راستوں کا انتخاب کرتے ہیں جو مرکزی گرڈ پر نہیں دکھائے گئے ہیں جو اتنے ہی قیمتی ہوسکتے ہیں۔ مثال کے طور پر، سپورٹڈ انٹرن شپس اور ٹرینی شپس تعلیم، صحت اور دیکھ بھال (EHC) کے منصوبوں یا اضافی ضروریات والے نوجوانوں کے لیے منظم مدد فراہم کرتی ہیں۔ ان میں ملازمت کی تربیت اور آزادی اور روزگار کی صلاحیت پیدا کرنے پر بھرپور توجہ شامل ہے۔ کچھ طلباء مسلح افواج میں شامل ہوتے ہیں، جہاں تربیت، قابلیت اور کیریئر کی ترقی کو خدمات کے ساتھ ملایا جاتا ہے۔ انٹری لیول کا کام یا سیکٹر کے لیے مخصوص تربیتی پروگرام بھی نوجوانوں کو مہارتیں بنانے اور اپرنٹس شپ یا مزید تعلیم حاصل کرنے میں مدد دے سکتے ہیں۔ اپنے اسکول، کالج، یا مقامی کیریئر سروس سے بات کریں تاکہ یہ معلوم ہوسکے کہ کیا دستیاب ہے اور آپ کے بچے کے اہداف کی بہترین حمایت کیا کرے گا۔"
-            }
-        };
-
-        const languageSelect = document.getElementById('languageSelect');
-
-        function changeLanguage() {
-            const lang = languageSelect.value;
-            localStorage.setItem('selectedLanguage', lang); // Save preference
-            const translation = translations[lang] || translations.en;
-
-            // Set document direction for RTL languages
-            if (lang === 'ar' || lang === 'ur') {
-                document.documentElement.setAttribute('dir', 'rtl');
-            } else {
-                document.documentElement.setAttribute('dir', 'ltr');
-            }
-
-            // Update document title
-            if (translation.doc_title) {
-                document.title = translation.doc_title;
-            }
-
-            // Iterate over translation keys and update elements
-            for (const key in translation) {
-                if (Object.hasOwnProperty.call(translation, key)) {
-                    if (key === 'doc_title') continue; // Already handled
-                    const element = document.getElementById(key);
-                    if (element) {
-                        element.innerHTML = translation[key];
-                    }
-                }
-            }
-        }
-
-        // Set initial language on page load and add event listener
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedLang = localStorage.getItem('selectedLanguage') || 'en';
-            languageSelect.value = savedLang;
-            changeLanguage(); // Set initial language
-            
-            languageSelect.addEventListener('change', changeLanguage);
+            <h4 class="text-2xl font-bold text-gray-900 mb-4 mt-8 text-left">My Action Checklist:</h4>
+            <div class="flex flex-col items-start space-y-2 max-w-lg mx-auto">
+                <label class="flex items-center gap-2 text-base text-gray-700 cursor-pointer">
+                    <input type="checkbox" id="checklist_research_college" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-400 focus:ring-blue-500"> Research a specific college/course
+                </label>
+                <label class="flex items-center gap-2 text-base text-gray-700 cursor-pointer">
+                    <input type="checkbox" id="checklist_talk_careers_advisor" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-400 focus:ring-blue-500"> Talk to my careers advisor
+                </label>
+                <label class="flex items-center gap-2 text-base text-gray-700 cursor-pointer">
+                    <input type="checkbox" id="checklist_search_apprenticeships" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-400 focus:ring-blue-500"> Search for apprenticeships on gov.uk
+                </label>
+                <label class="flex items-center gap-2 text-base text-gray-700 cursor-pointer">
+                    <input type="checkbox" id="checklist_attend_open_day" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-400 focus:ring-blue-500"> Attend a college open day/virtual event
+                </label>
+                <label class="flex items-center gap-2 text-base text-gray-700 cursor-pointer">
+                    <input type="checkbox" id="checklist_speak_teacher" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-400 focus:ring-blue-500"> Speak to a teacher about my options
+                </label>
+                <label class="flex items-center gap-2 text-base text-gray-700 cursor-pointer">
+                    <input type="checkbox" id="checklist_talk_family_friends" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-400 focus:ring-blue-500"> Talk to family/friends who work in interesting fields
+                </label>
+                <label class="flex items-center gap-2 text-base text-gray-700 cursor-pointer">
+                    <input type="checkbox" id="checklist_take_quiz" class="form-checkbox h-4 w-4 text-blue-600 rounded border-gray-400 focus:ring-blue-500"> Take an online careers quiz
+                </label>
+            </div>
+        </div>    
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Print Button ---
+        document.getElementById('printButton').addEventListener('click', () => {
+            window.print();
         });
-    </script>
-    
-    <footer class="text-center text-xs text-gray-500 mt-8">
+
+        // --- Local Storage for Textareas ---
+        const textareas = [
+            'pathway_good_fit',
+            'learn_more_about',
+            'my_next_step',
+            'questions_to_ask',
+            'who_to_talk_to'
+        ];
+
+        textareas.forEach(id => {
+            const textarea = document.getElementById(id);
+            if (textarea) {
+                // Load saved text
+                textarea.value = localStorage.getItem(id) || '';
+                // Save text on input
+                textarea.addEventListener('input', () => {
+                    localStorage.setItem(id, textarea.value);
+                });
+            }
+        });
+
+        // --- Toggle Card Details ---
+        document.querySelectorAll('.toggle-details-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const cardDetails = button.nextElementSibling; // Assuming .card-details is the next sibling
+                if (cardDetails.classList.contains('expanded')) {
+                    cardDetails.classList.remove('expanded');
+                    button.textContent = 'Show Details';
+                } else {
+                    cardDetails.classList.add('expanded');
+                    button.textContent = 'Hide Details';
+                }
+            });
+        });
+
+        // --- Local Storage for Checkboxes ---
+        const checkboxes = [
+            'learning_doing',
+            'learning_writing',
+            'learning_talking',
+            'learning_watching',
+            'learning_building',
+            'goal_university',
+            'goal_earn_money',
+            'goal_real_experience',
+            'goal_try_different',
+            'checklist_research_college',
+            'checklist_talk_careers_advisor',
+            'checklist_search_apprenticeships',
+            'checklist_attend_open_day',
+            'checklist_speak_teacher',
+            'checklist_talk_family_friends',
+            'checklist_take_quiz'
+        ];
+
+        checkboxes.forEach(id => {
+            const checkbox = document.getElementById(id);
+            if (checkbox) {
+                // Load saved state
+                checkbox.checked = (localStorage.getItem(id) === 'true');
+                // Save state on change
+                checkbox.addEventListener('change', () => {
+                    localStorage.setItem(id, checkbox.checked);
+                });
+            }
+        });
+    });
+</script>
+
+<footer class="text-center text-xs text-gray-500 mt-8">
   © 2025 Futures Unlocked | Developed by S.N.Hekim
 </footer>
 
